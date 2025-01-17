@@ -11,7 +11,7 @@ export default function Header() {
   return (
     <header className="bg-black text-white">
       <div className="px-2">
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Link
               href={"/"}

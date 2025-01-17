@@ -27,11 +27,11 @@ export default function Footer() {
         </div>
         <div className="flex justify-center text-sm">
           <p>
-            © 2000 - ${currentYear}, {APP_NAME}, Inc. or its affiliates
+            © 2000 - {currentYear}, {APP_NAME}, Inc. or its affiliates
           </p>
         </div>
         <div className="mt-8 flex justify-center text-sm text-gray-400">
-          No.102 Odim street, Nsukka, Zip 422111 | +2348163887385
+          No.102 Odim street, Nsukka, Zip 410001 | +2348163887385
         </div>
       </div>
     </footer>

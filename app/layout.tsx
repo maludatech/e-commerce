@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SteezeBoutique",
-  description: "Your best boutique for male and female wears & accessories",
+  title: "Steeze Boutique",
+  description: "Spend less, enjoy more",
 };
 
 export default function RootLayout({

@@ -1,9 +1,6 @@
+import { HomeCarousel } from "@/components/ui/shared/home/home-carousel";
+import data from "@/lib/data";
+
 export default async function Page() {
-  return (
-    <div>
-      <div className=" body-container">
-        <h1 className="h1-bold text-center p-10">Home Page Content</h1>
-      </div>
-    </div>
-  );
+  return <HomeCarousel items={data.carousels} />;
 }

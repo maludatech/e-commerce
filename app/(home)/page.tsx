@@ -1,7 +1,10 @@
+import { Card, CardContent } from "@/components/ui/card";
 import { HomeCard } from "@/components/ui/shared/home/home-card";
 import { HomeCarousel } from "@/components/ui/shared/home/home-carousel";
+import ProductSlider from "@/components/ui/shared/product/product-slider";
 import {
   getAllCategories,
+  getProductsByTag,
   getProductsForCard,
 } from "@/lib/actions/product.action";
 import data from "@/lib/data";
@@ -18,6 +21,9 @@ export default async function Page() {
   const bestSellers = await getProductsForCard({
     tag: "best-seller",
   });
+
+  const todaysDeals = await getProductsByTag({ tag: "todays-deal" });
+
   const cards = [
     {
       title: "Categories to explore",
@@ -25,7 +31,7 @@ export default async function Page() {
         text: "See More",
         href: "/search",
       },
-      items: categories.map((category) => ({
+      items: categories.map((category: any) => ({
         name: category,
         image: `/assets/images/${toSlug(category)}.jpg`,
         href: `/search?category=${category}`,
@@ -62,6 +68,11 @@ export default async function Page() {
       <HomeCarousel items={data.carousels} />
       <div className="md:p-4 md:space-y-4 bg-border">
         <HomeCard cards={cards} />
+        <Card className="w-full rounded-none">
+          <CardContent className="p-4 items-center gap-3">
+            <ProductSlider title="Today's Deals" products={todaysDeals} />
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

@@ -49,7 +49,6 @@ export default async function ProductDetails(props: {
     page: Number(page || "1"),
   });
 
-  // const t = await getTranslations();
   return (
     <div className="body-container">
       <AddToBrowsingHistory id={product._id} category={product.category} />

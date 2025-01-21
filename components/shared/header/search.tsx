@@ -1,13 +1,13 @@
 import { SearchIcon } from "lucide-react";
 import { APP_NAME } from "@/lib/constants";
-import { Input } from "../../input";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../select";
+} from "@/components/ui/select";
 
 export default async function Search() {
   const categories = ["men", "women", "kids", "accessories"];

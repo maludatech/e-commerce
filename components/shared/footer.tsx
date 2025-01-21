@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ChevronUp } from "lucide-react";
-import { Button } from "../button";
+import { Button } from "../ui/button";
 import { APP_NAME } from "@/lib/constants";
 
 export default function Footer() {

@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { HomeCard } from "@/components/ui/shared/home/home-card";
-import { HomeCarousel } from "@/components/ui/shared/home/home-carousel";
-import ProductSlider from "@/components/ui/shared/product/product-slider";
+import { HomeCard } from "@/components/shared/home/home-card";
+import { HomeCarousel } from "@/components/shared/home/home-carousel";
+import ProductSlider from "@/components/shared/product/product-slider";
 import {
   getAllCategories,
   getProductsByTag,

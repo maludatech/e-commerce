@@ -49,7 +49,7 @@ export default async function ProductDetails(props: {
 
   // const t = await getTranslations();
   return (
-    <div className="body-container p-4">
+    <div className="body-container">
       {/* <AddToBrowsingHistory id={product._id} category={product.category} /> */}
       <section>
         <div className="grid grid-cols-1 md:grid-cols-5  ">

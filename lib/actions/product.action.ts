@@ -69,7 +69,7 @@ export async function getProductBySlug(slug: string) {
 export async function getRelatedProductsByCategory({
   category,
   productId,
-  limit = 4,
+  limit = 5,
   page = 1,
 }: {
   category: string;

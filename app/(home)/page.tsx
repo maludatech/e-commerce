@@ -67,7 +67,7 @@ export default async function Page() {
   ];
 
   return (
-    <div className="body-container">
+    <>
       <div>
         <HomeCarousel items={data.carousels} />
         <div className="md:p-4 md:space-y-4 bg-border">
@@ -92,6 +92,6 @@ export default async function Page() {
       <div className="p-4 bg-background">
         <BrowsingHistoryList />
       </div>
-    </div>
+    </>
   );
 }

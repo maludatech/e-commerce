@@ -52,7 +52,7 @@ export default async function ProductDetails(props: {
   });
 
   return (
-    <div className="body-container">
+    <div>
       <AddToBrowsingHistory id={product._id} category={product.category} />
       <section>
         <div className="grid grid-cols-1 md:grid-cols-5  ">

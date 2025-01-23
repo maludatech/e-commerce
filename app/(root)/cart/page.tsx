@@ -85,10 +85,12 @@ export default function CartPage() {
                             <span className="font-bold">Color:</span>{" "}
                             {item.color}
                           </p>
-                          <p className="text-sm">
-                            <span className="font-bold"> Size:</span>{" "}
-                            {item.size}
-                          </p>
+                          {item.size && (
+                            <p className="text-sm">
+                              <span className="font-bold"> Size:</span>{" "}
+                              {item.size}
+                            </p>
+                          )}
                         </div>
                         <div className="flex gap-2 items-center">
                           <Select
@@ -124,7 +126,7 @@ export default function CartPage() {
                         <p className="text-right">
                           {item.quantity > 1 && (
                             <>
-                              {item.quantity} x
+                              {item.quantity} x{" "}
                               <ProductPrice price={item.price} plain />
                               <br />
                             </>
@@ -142,11 +144,9 @@ export default function CartPage() {
                   ))}
 
                   <div className="flex justify-end text-lg my-2">
-                    Subtotal
-                    {items.reduce(
-                      (acc, item) => acc + item.quantity,
-                      0
-                    )} Items:{" "}
+                    Subtotal (
+                    {items.reduce((acc, item) => acc + item.quantity, 0)}{" "}
+                    items):{" "}
                     <span className="font-bold ml-1">
                       <ProductPrice price={itemsPrice} plain />
                     </span>{" "}

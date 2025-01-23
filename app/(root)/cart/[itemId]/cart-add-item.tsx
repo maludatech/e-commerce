@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import useCartStore from "@/hooks/use-cart-store";
-import { useTranslations } from "next-intl";
+// import { useTranslations } from "next-intl";
 import { FREE_SHIPPING_MIN_PRICE } from "@/lib/constants";
 
 export default function CartAddItem({ itemId }: { itemId: string }) {
@@ -19,7 +19,7 @@ export default function CartAddItem({ itemId }: { itemId: string }) {
 
   const item = items.find((x) => x.clientId === itemId);
 
-  const t = useTranslations();
+  // const t = useTranslations();
 
   if (!item) return notFound();
   return (
@@ -42,15 +42,13 @@ export default function CartAddItem({ itemId }: { itemId: string }) {
             <div>
               <h3 className="text-xl font-bold flex gap-2 my-2">
                 <CheckCircle2Icon className="h-6 w-6 text-green-700" />
-                {t("Cart.Added to cart")}
+                Added to cart
               </h3>
               <p className="text-sm">
-                <span className="font-bold"> {t("Cart.Color")}: </span>{" "}
-                {item.color ?? "-"}
+                <span className="font-bold"> Color: </span> {item.color ?? "-"}
               </p>
               <p className="text-sm">
-                <span className="font-bold"> {t("Cart.Size")}: </span>{" "}
-                {item.size ?? "-"}
+                <span className="font-bold"> Size: </span> {item.size ?? "-"}
               </p>
             </div>
           </CardContent>
@@ -61,16 +59,15 @@ export default function CartAddItem({ itemId }: { itemId: string }) {
               <div className="flex justify-center items-center">
                 {itemsPrice < FREE_SHIPPING_MIN_PRICE ? (
                   <div className="text-center ">
-                    {t("Cart.Add")}{" "}
+                    Add
                     <span className="text-green-700">
                       <ProductPrice
                         price={FREE_SHIPPING_MIN_PRICE - itemsPrice}
                         plain
                       />
                     </span>{" "}
-                    {t(
-                      "Cart.of eligible items to your order to qualify for FREE Shipping"
-                    )}
+                    of eligible items to your order to qualify for FREE
+                    Shipping"
                   </div>
                 ) : (
                   <div className="flex items-center">
@@ -102,7 +99,7 @@ export default function CartAddItem({ itemId }: { itemId: string }) {
                     "rounded-full w-full"
                   )}
                 >
-                  {t("Cart.Go to Cart")}
+                  Go to Cart
                 </Link>
               </div>
             </div>

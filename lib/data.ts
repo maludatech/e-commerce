@@ -707,7 +707,7 @@ const products: IProductInput[] = [
   },
 ];
 
-const data: Data = {
+const data = {
   products,
   headerMenus: [
     {

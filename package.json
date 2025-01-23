@@ -22,6 +22,7 @@
     "lucide-react": "^0.472.0",
     "mongoose": "^8.9.5",
     "next": "15.1.4",
+    "next-intl": "^3.26.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-medium-image-zoom": "^5.2.13",

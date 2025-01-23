@@ -11,6 +11,8 @@ import Rating from "@/components/shared/product/rating";
 import ProductSlider from "@/components/shared/product/product-slider";
 import BrowsingHistoryList from "@/components/shared/browsing-history-list";
 import AddToBrowsingHistory from "@/components/shared/product/add-to-browsing-history";
+import AddToCart from "@/components/shared/product/add-to-card";
+import { generateId, round2 } from "@/lib/utils";
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
@@ -112,7 +114,7 @@ export default async function ProductDetails(props: {
                   <div className="text-destructive text-xl">Out of Stock</div>
                 )}
 
-                {/* {product.countInStock !== 0 && (
+                {product.countInStock !== 0 && (
                   <div className="flex justify-center items-center">
                     <AddToCart
                       item={{
@@ -130,7 +132,7 @@ export default async function ProductDetails(props: {
                       }}
                     />
                   </div>
-                )} */}
+                )}
               </CardContent>
             </Card>
           </div>

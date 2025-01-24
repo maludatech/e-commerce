@@ -39,7 +39,7 @@ export default function CartSidebar() {
 
   return (
     <div className="w-32 overflow-y-auto">
-      <div className={`w-32 fixed border-l" h-full`}>
+      <div className={`w-32 fixed border-l h-full`}>
         <div className="p-2 h-full flex flex-col gap-2 justify-center items-center">
           <div className="text-center space-y-2">
             <div> Subtotal</div>

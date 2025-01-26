@@ -6,7 +6,7 @@ import {
   getAllCategories,
   getProductsByTag,
   getProductsForCard,
-} from "@/lib/actions/product.action";
+} from "@/lib/actions/product.actions";
 import data from "@/lib/data";
 import { toSlug } from "@/lib/utils";
 import BrowsingHistoryList from "@/components/shared/browsing-history-list";

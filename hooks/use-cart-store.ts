@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import { Cart, OrderItem, ShippingAddress } from "@/types";
-import { calculateDeliveryDateAndPrice } from "@/lib/actions/order.action";
+import { calculateDeliveryDateAndPrice } from "@/lib/actions/order.actions";
 
 const initialState: Cart = {
   items: [],

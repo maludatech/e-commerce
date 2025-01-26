@@ -1,7 +1,7 @@
 import {
   getProductBySlug,
   getRelatedProductsByCategory,
-} from "@/lib/actions/product.action";
+} from "@/lib/actions/product.actions";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
 import SelectVariant from "@/components/shared/product/select-variant";

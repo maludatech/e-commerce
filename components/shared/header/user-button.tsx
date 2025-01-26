@@ -9,7 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SignOut } from "@/lib/actions/user.action";
+import { SignOut } from "@/lib/actions/user.actions";
 import { cn } from "@/lib/utils";
 import { ChevronDownIcon } from "lucide-react";
 // import { getTranslations } from "next-intl/server";

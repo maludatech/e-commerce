@@ -44,18 +44,18 @@ export const AVAILABLE_DELIVERY_DATES = [
     name: "Tomorrow",
     daysToDeliver: 1,
     shippingPrice: 12.9,
-    freeShippingPrice: 0,
+    freeShippingMinPrice: 0,
   },
   {
     name: "Next 3 Days",
     daysToDeliver: 3,
     shippingPrice: 6.9,
-    freeShippingPrice: 0,
+    freeShippingMinPrice: 0,
   },
   {
     name: "Next 5 Days",
     daysToDeliver: 5,
     shippingPrice: 4.9,
-    freeShippingPrice: 0,
+    freeShippingMinPrice: 0,
   },
 ];

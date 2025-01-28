@@ -27,8 +27,8 @@ export const calculateDeliveryDateAndPrice = async ({
   const shippingPrice =
     !shippingAddress || !deliveryDate
       ? undefined
-      : deliveryDate.freeShippingPrice > 0 &&
-        itemsPrice >= deliveryDate.freeShippingPrice
+      : deliveryDate.freeShippingMinPrice > 0 &&
+        itemsPrice >= deliveryDate.freeShippingMinPrice
       ? 0
       : deliveryDate.shippingPrice;
 

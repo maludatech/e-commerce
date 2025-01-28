@@ -86,6 +86,8 @@ export const OrderItemSchema = z.object({
   size: z.string().optional(),
   color: z.string().optional(),
 });
+
+// Shipping
 export const ShippingAddressSchema = z.object({
   fullName: z.string().min(1, "Full name is required"),
   street: z.string().min(1, "Address is required"),

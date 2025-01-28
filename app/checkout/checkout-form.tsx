@@ -50,12 +50,12 @@ const shippingAddressDefaultValues =
   process.env.NODE_ENV === "development"
     ? {
         fullName: "Maluda",
-        street: "1911, 65 Sherbrooke Est",
-        city: "Montreal",
-        province: "Quebec",
+        street: "No.103, Odim street",
+        city: "Nsukka",
+        province: "Enugu",
         phone: "08163887385",
-        postalCode: "H2X 1C4",
-        country: "Canada",
+        postalCode: "410113",
+        country: "Nigeria",
       }
     : {
         fullName: "",
@@ -260,7 +260,7 @@ const CheckoutForm = () => {
           {/* shipping address */}
           <div>
             {isAddressSelected && shippingAddress ? (
-              <div className="grid grid-cols-1 md:grid-cols-12    my-3  pb-3">
+              <div className="grid grid-cols-1 md:grid-cols-12 my-3 pb-3">
                 <div className="col-span-5 flex text-lg font-bold ">
                   <span className="w-8">1 </span>
                   <span>Shipping address</span>

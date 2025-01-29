@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 import { IUserSignIn } from "@/types";
 import { signInWithCredentials } from "@/lib/actions/user.actions";
 
-import { toast } from "@/hooks/use-toast";
+import { toast, useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserSignInSchema } from "@/lib/validator";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
@@ -38,6 +38,7 @@ export default function CredentialsSignInForm() {
   //   const {
   //     setting: { site },
   //   } = useSettingStore();
+  const { taost } = useToast();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 

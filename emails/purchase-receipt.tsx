@@ -58,7 +58,7 @@ PurchaseReceiptEmail.PreviewProps = {
         countInStock: 10,
       },
     ],
-    paymentMethod: "PayPal",
+    paymentMethod: "Stripe",
     expectedDeliveryDate: new Date(),
     isDelivered: true,
   } as IOrder,

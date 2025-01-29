@@ -20,11 +20,6 @@ export const APP_COPYRIGHT = `Copyright © ${currentYear} ${APP_NAME}. All right
 
 export const AVAILABLE_PAYMENT_METHODS = [
   {
-    name: "PayPal",
-    commission: 0,
-    isDefault: true,
-  },
-  {
     name: "Stripe",
     commission: 0,
     isDefault: true,
@@ -37,7 +32,7 @@ export const AVAILABLE_PAYMENT_METHODS = [
 ];
 
 export const DEFAULT_PAYMENT_METHOD =
-  process.env.DEFAULT_PAYMENT_METHOD || "PayPal";
+  process.env.DEFAULT_PAYMENT_METHOD || "Stripe";
 
 export const AVAILABLE_DELIVERY_DATES = [
   {

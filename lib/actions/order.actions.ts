@@ -6,7 +6,7 @@ import { AVAILABLE_DELIVERY_DATES } from "../constants";
 import { connectToDb } from "@/utils/database";
 import { auth } from "@/auth";
 import { OrderInputSchema } from "../validator";
-import Order from "@/db/models/oder.model";
+import Order from "@/db/models/order.model";
 
 export const calculateDeliveryDateAndPrice = async ({
   items,
@@ -32,9 +32,9 @@ export const calculateDeliveryDateAndPrice = async ({
     !shippingAddress || !deliveryDate
       ? undefined
       : deliveryDate.freeShippingMinPrice > 0 &&
-        itemsPrice >= deliveryDate.freeShippingMinPrice
-      ? 0
-      : deliveryDate.shippingPrice;
+          itemsPrice >= deliveryDate.freeShippingMinPrice
+        ? 0
+        : deliveryDate.shippingPrice;
 
   const taxPrice = !shippingAddress ? undefined : round2(itemsPrice * 0.15);
   const totalPrice = round2(

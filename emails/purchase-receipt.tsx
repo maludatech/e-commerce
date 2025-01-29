@@ -68,7 +68,7 @@ const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
 export default async function PurchaseReceiptEmail({
   order,
 }: OrderInformationProps) {
-//   const { site } = await getSetting();
+  //   const { site } = await getSetting();
   return (
     <Html>
       <Preview>View order receipt</Preview>

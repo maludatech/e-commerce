@@ -164,7 +164,7 @@ export default function OrderDetailsForm({
                 Pay Order
               </Link>
             )}
-
+            {/* 
             {isAdmin && !isPaid && paymentMethod === "Cash On Delivery" && (
               <ActionButton
                 caption="Mark as paid"
@@ -176,7 +176,7 @@ export default function OrderDetailsForm({
                 caption="Mark as delivered"
                 action={() => deliverOrder(order._id)}
               />
-            )}
+            )} */}
           </CardContent>
         </Card>
       </div>

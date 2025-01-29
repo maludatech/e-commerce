@@ -38,7 +38,7 @@ export default function CredentialsSignInForm() {
   //   const {
   //     setting: { site },
   //   } = useSettingStore();
-  const { taost } = useToast();
+  const { toast } = useToast();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 

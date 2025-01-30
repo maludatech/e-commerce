@@ -29,7 +29,7 @@ export default async function Sidebar({
   //direction={getDirection(locale) === 'rtl' ? 'right' : 'left'}
   return (
     <Drawer direction={"left"}>
-      <DrawerTrigger className="header-button flex items-center !p-2  ">
+      <DrawerTrigger className="header-button flex items-center !p-2">
         <MenuIcon className="h-5 w-5 mr-1" />
         All
       </DrawerTrigger>

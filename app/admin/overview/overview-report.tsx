@@ -23,7 +23,7 @@ import { calculatePastDate, formatDateTime, formatNumber } from "@/lib/utils";
 import SalesCategoryPieChart from "./sales-category-pie-chart";
 
 import React, { useEffect, useState, useTransition } from "react";
-import { DateRange } from "react-day-picker";
+import { DateRange } from "@/types";
 import { getOrderSummary } from "@/lib/actions/order.actions";
 import SalesAreaChart from "./sales-area-chart";
 import { CalendarDateRangePicker } from "./date-range-picker";
@@ -44,6 +44,7 @@ export default function OverviewReport() {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isPending, startTransition] = useTransition();
+
   useEffect(() => {
     if (date) {
       startTransition(async () => {
@@ -92,7 +93,7 @@ export default function OverviewReport() {
         <CalendarDateRangePicker defaultDate={date} setDate={setDate} />
       </div>
       <div className="space-y-4">
-        <div className="grid gap-4  grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">

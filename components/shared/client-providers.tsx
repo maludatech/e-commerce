@@ -5,13 +5,13 @@ import CartSidebar from "./cart-sidebar";
 import { ThemeProvider } from "./theme-provider";
 import { Toaster } from "../ui/toaster";
 // import AppInitializer from './app-initializer'
-import { ClientSetting } from "@/types";
+// import { ClientSetting } from "@/types";
 
 export default function ClientProviders({
-  setting,
+  // setting,
   children,
 }: {
-  setting: ClientSetting;
+  // setting: ClientSetting;
   children: React.ReactNode;
 }) {
   const visible = useCartSidebar();

@@ -6,7 +6,6 @@ import { auth } from "@/auth";
 import { ProfileForm } from "./profile-form";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { redirect } from "next/navigation";
 import { APP_NAME } from "@/lib/constants";
 // import { getSetting } from "@/lib/actions/setting.actions";
 

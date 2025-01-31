@@ -120,7 +120,7 @@ export default async function SearchPage(props: {
   //   const t = await getTranslations();
   return (
     <div>
-      <div className="my-2 bg-card md:border-b  flex-between flex-col md:flex-row ">
+      <div className="my-2 bg-card md:border-b flex-between flex-col md:flex-row ">
         <div className="flex items-center">
           {data.totalProducts === 0
             ? "No"
@@ -226,14 +226,14 @@ export default async function SearchPage(props: {
                     className={`${"4" === rating && "text-primary"}`}
                   >
                     <div className="flex">
-                      <Rating size={4} rating={4} /> .& Up
+                      <Rating size={4} rating={4} />& Up
                     </div>
                   </Link>
                 </li>
               </ul>
             </div>
             <div>
-              <div className="font-bold">.Tag</div>
+              <div className="font-bold">Tag</div>
               <ul>
                 <li>
                   <Link
@@ -242,7 +242,7 @@ export default async function SearchPage(props: {
                     }`}
                     href={getFilterUrl({ tag: "all", params })}
                   >
-                    .All
+                    All
                   </Link>
                 </li>
                 {tags.map((t: string) => (

@@ -8,9 +8,8 @@ import { auth } from "@/auth";
 import { OrderInputSchema } from "../validator";
 import Order, { IOrder } from "@/db/models/order.model";
 import { sendPurchaseReceipt } from "@/emails";
-import { revalidatePath } from "next/cache";
+import { DateRange } from "@/types";
 import Product from "@/db/models/product.model";
-import { DateRange } from "react-day-picker";
 import User from "@/db/models/user.model";
 
 export const calculateDeliveryDateAndPrice = async ({

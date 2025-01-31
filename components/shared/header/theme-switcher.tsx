@@ -20,8 +20,7 @@ import { useTranslations } from "next-intl";
 export default function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
   const { availableColors, color, setColor } = useColorStore(theme);
-  console.log("color:", color);
-  console.log("available colors", availableColors);
+
   //   const t = useTranslations("Header");
   const changeTheme = (value: string) => {
     setTheme(value);

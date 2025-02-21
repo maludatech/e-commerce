@@ -4,6 +4,7 @@ import "./globals.css";
 import { APP_NAME, APP_SLOGAN, APP_DESCRIPTION } from "@/lib/constants";
 import ClientProviders from "@/components/shared/client-providers";
 import { Analytics } from "@vercel/analytics/react";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ClientProviders>{children}</ClientProviders>
+        <Toaster />
       </body>
     </html>
   );

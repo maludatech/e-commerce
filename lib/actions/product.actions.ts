@@ -6,6 +6,9 @@ import Product from "@/db/models/product.model";
 import { PAGE_SIZE } from "../constants";
 import { revalidatePath } from "next/cache";
 import { formatError } from "../utils";
+import { ProductInputSchema, ProductUpdateSchema } from "../validator";
+import { z } from "zod";
+import { IProductInput } from "@/types";
 
 // GET ALL CATEGORIES
 export async function getAllCategories() {
@@ -281,4 +284,42 @@ export async function getAllProductsForAdmin({
     from: pageSize * (Number(page) - 1) + 1,
     to: pageSize * (Number(page) - 1) + products.length,
   };
+}
+
+// CREATE
+export async function createProduct(data: IProductInput) {
+  try {
+    const product = ProductInputSchema.parse(data);
+    await connectToDb();
+    await Product.create(product);
+    revalidatePath("/admin/products");
+    return {
+      success: true,
+      message: "Product created successfully",
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+}
+
+// UPDATE
+export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>) {
+  try {
+    const product = ProductUpdateSchema.parse(data);
+    await connectToDb();
+    await Product.findByIdAndUpdate(product._id, product);
+    revalidatePath("/admin/products");
+    return {
+      success: true,
+      message: "Product updated successfully",
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+}
+// GET ONE PRODUCT BY ID
+export async function getProductById(productId: string) {
+  await connectToDb();
+  const product = await Product.findById(productId);
+  return JSON.parse(JSON.stringify(product)) as IProduct;
 }

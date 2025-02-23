@@ -90,7 +90,7 @@ export default async function OrdersPage(props: {
           </TableBody>
         </Table>
         {orders.totalPages > 1 && (
-          <Pagination page={page} totalPages={orders.totalPages} />
+          <Pagination page={page} totalPages={orders?.totalPages!} />
         )}
       </div>
       <BrowsingHistoryList className="mt-16" />

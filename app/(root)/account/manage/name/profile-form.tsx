@@ -27,7 +27,7 @@ export const ProfileForm = () => {
   const form = useForm<z.infer<typeof UserNameSchema>>({
     resolver: zodResolver(UserNameSchema),
     defaultValues: {
-      name: session?.user?.name ?? "",
+      name: session?.user?.name!,
     },
   });
   const { toast } = useToast();

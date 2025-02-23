@@ -11,6 +11,7 @@ import { sendPurchaseReceipt } from "@/emails";
 import { DateRange } from "@/types";
 import Product from "@/db/models/product.model";
 import User from "@/db/models/user.model";
+import { revalidatePath } from "next/cache";
 
 export const calculateDeliveryDateAndPrice = async ({
   items,
@@ -359,4 +360,44 @@ async function getTopSalesCategories(date: DateRange, limit = 5) {
   ]);
 
   return result;
+}
+
+// DELETE
+export async function deleteOrder(id: string) {
+  try {
+    await connectToDb();
+    const res = await Order.findByIdAndDelete(id);
+    if (!res) throw new Error("Order not found");
+    revalidatePath("/admin/orders");
+    return {
+      success: true,
+      message: "Order deleted successfully",
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+}
+
+// GET ALL ORDERS
+
+export async function getAllOrders({
+  limit,
+  page,
+}: {
+  limit?: number;
+  page: number;
+}) {
+  limit = limit || PAGE_SIZE;
+  await connectToDb();
+  const skipAmount = (Number(page) - 1) * limit;
+  const orders = await Order.find()
+    .populate("user", "name")
+    .sort({ createdAt: "desc" })
+    .skip(skipAmount)
+    .limit(limit);
+  const ordersCount = await Order.countDocuments();
+  return {
+    data: JSON.parse(JSON.stringify(orders)) as IOrderList[],
+    totalPages: Math.ceil(ordersCount / limit),
+  };
 }

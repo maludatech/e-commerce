@@ -31,7 +31,7 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
     router.push(newUrl, { scroll: true });
   };
 
-  const t = useTranslations();
+  // const t = useTranslations();
   return (
     <div className="flex items-center gap-2">
       <Button
@@ -41,9 +41,13 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
         disabled={Number(page) <= 1}
         className="w-24"
       >
-        <ChevronLeft /> {t("Search.Previous")}
+        <ChevronLeft /> Previous
+        {/* {t("Search.Previous")} */}
       </Button>
-      {t("Search.Page")} {page} {t("Search.of")} {totalPages}
+      {/* {t("Search.Page")} */} Page
+      {page}
+      {/* {t("Search.of")} */}
+      of {totalPages}
       <Button
         size="lg"
         variant="outline"
@@ -51,7 +55,8 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
         disabled={Number(page) >= totalPages}
         className="w-24"
       >
-        {t("Search.Next")} <ChevronRight />
+        {/* {t("Search.Next")}  */}
+        Next <ChevronRight />
       </Button>
     </div>
   );

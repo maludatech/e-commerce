@@ -32,7 +32,7 @@ const productDefaultValues: IProductInput =
         name: "Sample Product",
         slug: "sample-product",
         category: "Sample Category",
-        images: ["assets/images/p11-1.jpg"],
+        images: ["/assets/images/p11-1.jpg"],
         brand: "Sample Brand",
         description: "This is a sample description of the product.",
         price: 99.99,

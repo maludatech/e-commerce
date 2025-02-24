@@ -49,7 +49,7 @@ export default async function WebPageAdminPage() {
                 <TableCell>{webPage.isPublished ? "Yes" : "No"}</TableCell>
                 <TableCell className="flex gap-1">
                   <Button asChild variant="outline" size="sm">
-                    <Link href={`/admin/web-pages/${webPage.slug}`}>Edit</Link>
+                    <Link href={`/admin/web-pages/${webPage._id}`}>Edit</Link>
                   </Button>
                   <DeleteDialog id={webPage._id} action={deleteWebPage} />
                 </TableCell>

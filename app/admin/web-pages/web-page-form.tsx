@@ -6,9 +6,8 @@ import { useForm } from "react-hook-form";
 
 import { z } from "zod";
 
-import MdEditor from "react-markdown-editor-lite";
+import MDEditor from "@uiw/react-md-editor";
 import ReactMarkdown from "react-markdown";
-import "react-markdown-editor-lite/lib/index.css";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -154,7 +153,7 @@ const WebPageForm = ({
               <FormItem className="w-full">
                 <FormLabel>Content</FormLabel>
                 <FormControl>
-                  <MdEditor
+                  <MDEditor
                     // value={markdown}
                     {...field}
                     style={{ height: "500px" }}

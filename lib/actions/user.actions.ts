@@ -1,25 +1,16 @@
 "use server";
 
+import bcrypt from "bcryptjs";
 import { auth, signIn, signOut } from "@/auth";
 import { IUserName, IUserSignIn, IUserSignUp } from "@/types";
-import { redirect } from "next/navigation";
 import { UserSignUpSchema, UserUpdateSchema } from "../validator";
 import { connectToDb } from "@/utils/database";
 import User, { IUser } from "@/db/models/user.model";
 import { formatError } from "../utils";
-import bcrypt from "bcryptjs";
-import { PAGE_SIZE } from "../constants";
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-
-export async function signInWithCredentials(user: IUserSignIn) {
-  return await signIn("credentials", { ...user, redirect: false });
-}
-
-export const SignOut = async () => {
-  const redirectTo = await signOut({ redirect: false });
-  redirect(redirectTo.redirect);
-};
+import { getSetting } from "./setting.actions";
 
 // CREATE
 export async function registerUser(userSignUp: IUserSignUp) {
@@ -42,32 +33,13 @@ export async function registerUser(userSignUp: IUserSignUp) {
   }
 }
 
-//UPDATE
-export async function updateUserName(user: IUserName) {
-  try {
-    await connectToDb();
-    const session = await auth();
-    const currentUser = await User.findById(session?.user?.id);
-    if (!currentUser) throw new Error("User not found");
-    currentUser.name = user.name;
-    const updatedUser = await currentUser.save();
-    return {
-      success: true,
-      message: "User updated successfully",
-      data: JSON.parse(JSON.stringify(updatedUser)),
-    };
-  } catch (error) {
-    return { success: false, message: formatError(error) };
-  }
-}
-
 // DELETE
 
 export async function deleteUser(id: string) {
   try {
     await connectToDb();
     const res = await User.findByIdAndDelete(id);
-    if (!res) throw new Error("User not found");
+    if (!res) throw new Error("Use not found");
     revalidatePath("/admin/users");
     return {
       success: true,
@@ -77,29 +49,7 @@ export async function deleteUser(id: string) {
     return { success: false, message: formatError(error) };
   }
 }
-
-// GET
-export async function getAllUsers({
-  limit,
-  page,
-}: {
-  limit?: number;
-  page: number;
-}) {
-  limit = limit || PAGE_SIZE;
-  await connectToDb();
-
-  const skipAmount = (Number(page) - 1) * limit;
-  const users = await User.find()
-    .sort({ createdAt: "desc" })
-    .skip(skipAmount)
-    .limit(limit);
-  const usersCount = await User.countDocuments();
-  return {
-    data: JSON.parse(JSON.stringify(users)) as IUser[],
-    totalPages: Math.ceil(usersCount / limit),
-  };
-}
+// UPDATE
 
 export async function updateUser(user: z.infer<typeof UserUpdateSchema>) {
   try {
@@ -119,6 +69,60 @@ export async function updateUser(user: z.infer<typeof UserUpdateSchema>) {
   } catch (error) {
     return { success: false, message: formatError(error) };
   }
+}
+export async function updateUserName(user: IUserName) {
+  try {
+    await connectToDb();
+    const session = await auth();
+    const currentUser = await User.findById(session?.user?.id);
+    if (!currentUser) throw new Error("User not found");
+    currentUser.name = user.name;
+    const updatedUser = await currentUser.save();
+    return {
+      success: true,
+      message: "User updated successfully",
+      data: JSON.parse(JSON.stringify(updatedUser)),
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+}
+
+export async function signInWithCredentials(user: IUserSignIn) {
+  return await signIn("credentials", { ...user, redirect: false });
+}
+export const SignInWithGoogle = async () => {
+  await signIn("google");
+};
+export const SignOut = async () => {
+  const redirectTo = await signOut({ redirect: false });
+  redirect(redirectTo.redirect);
+};
+
+// GET
+export async function getAllUsers({
+  limit,
+  page,
+}: {
+  limit?: number;
+  page: number;
+}) {
+  const {
+    common: { pageSize },
+  } = await getSetting();
+  limit = limit || pageSize;
+  await connectToDb();
+
+  const skipAmount = (Number(page) - 1) * limit;
+  const users = await User.find()
+    .sort({ createdAt: "desc" })
+    .skip(skipAmount)
+    .limit(limit);
+  const usersCount = await User.countDocuments();
+  return {
+    data: JSON.parse(JSON.stringify(users)) as IUser[],
+    totalPages: Math.ceil(usersCount / limit),
+  };
 }
 
 export async function getUserById(userId: string) {

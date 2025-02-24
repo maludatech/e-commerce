@@ -4,7 +4,7 @@ import { redirect, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-// import useSettingStore from "@/hooks/use-setting-store";
+import useSettingStore from "@/hooks/use-setting-store";
 import {
   Form,
   FormControl,
@@ -19,12 +19,11 @@ import {
   registerUser,
   signInWithCredentials,
 } from "@/lib/actions/user.actions";
-import { toast, useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserSignUpSchema } from "@/lib/validator";
 import { Separator } from "@/components/ui/separator";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { APP_NAME } from "@/lib/constants";
 
 const signUpDefaultValues =
   process.env.NODE_ENV === "development"
@@ -42,10 +41,9 @@ const signUpDefaultValues =
       };
 
 export default function CredentialsSignInForm() {
-  //   const {
-  //     setting: { site },
-  //   } = useSettingStore();
-  const { toast } = useToast();
+  const {
+    setting: { site },
+  } = useSettingStore();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
@@ -155,7 +153,7 @@ export default function CredentialsSignInForm() {
             <Button type="submit">Sign Up</Button>
           </div>
           <div className="text-sm">
-            By creating an account, you agree to {APP_NAME}&apos;s{" "}
+            By creating an account, you agree to {site.name}&apos;s{" "}
             <Link href="/page/conditions-of-use">Conditions of Use</Link> and{" "}
             <Link href="/page/privacy-policy"> Privacy Notice. </Link>
           </div>

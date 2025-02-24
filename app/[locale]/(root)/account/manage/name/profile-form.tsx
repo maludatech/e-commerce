@@ -23,11 +23,10 @@ import { UserNameSchema } from "@/lib/validator";
 export const ProfileForm = () => {
   const router = useRouter();
   const { data: session, update } = useSession();
-
   const form = useForm<z.infer<typeof UserNameSchema>>({
     resolver: zodResolver(UserNameSchema),
     defaultValues: {
-      name: session?.user?.name!,
+      name: session?.user?.name ?? "",
     },
   });
   const { toast } = useToast();

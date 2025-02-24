@@ -17,7 +17,6 @@ import BrowsingHistoryList from "@/components/shared/browsing-history-list";
 import ProductPrice from "@/components/shared/product/product-price";
 
 const PAGE_TITLE = "Your Orders";
-
 export const metadata: Metadata = {
   title: PAGE_TITLE,
 };
@@ -90,7 +89,7 @@ export default async function OrdersPage(props: {
           </TableBody>
         </Table>
         {orders.totalPages > 1 && (
-          <Pagination page={page} totalPages={orders?.totalPages!} />
+          <Pagination page={page} totalPages={orders.totalPages} />
         )}
       </div>
       <BrowsingHistoryList className="mt-16" />

@@ -9,18 +9,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import useCartStore from "@/hooks/use-cart-store";
-// import { useTranslations } from "next-intl";
-import { FREE_SHIPPING_MIN_PRICE } from "@/lib/constants";
+import useSettingStore from "@/hooks/use-setting-store";
+import { useTranslations } from "next-intl";
 
 export default function CartAddItem({ itemId }: { itemId: string }) {
   const {
     cart: { items, itemsPrice },
   } = useCartStore();
-
+  const {
+    setting: {
+      common: { freeShippingMinPrice },
+    },
+  } = useSettingStore();
   const item = items.find((x) => x.clientId === itemId);
 
-  // const t = useTranslations();
-
+  const t = useTranslations();
   if (!item) return notFound();
   return (
     <div>
@@ -42,13 +45,15 @@ export default function CartAddItem({ itemId }: { itemId: string }) {
             <div>
               <h3 className="text-xl font-bold flex gap-2 my-2">
                 <CheckCircle2Icon className="h-6 w-6 text-green-700" />
-                Added to cart
+                {t("Cart.Added to cart")}
               </h3>
               <p className="text-sm">
-                <span className="font-bold"> Color: </span> {item.color ?? "-"}
+                <span className="font-bold"> {t("Cart.Color")}: </span>{" "}
+                {item.color ?? "-"}
               </p>
               <p className="text-sm">
-                <span className="font-bold"> Size: </span> {item.size ?? "-"}
+                <span className="font-bold"> {t("Cart.Size")}: </span>{" "}
+                {item.size ?? "-"}
               </p>
             </div>
           </CardContent>
@@ -57,17 +62,18 @@ export default function CartAddItem({ itemId }: { itemId: string }) {
           <CardContent className="p-4 h-full">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div className="flex justify-center items-center">
-                {itemsPrice < FREE_SHIPPING_MIN_PRICE ? (
+                {itemsPrice < freeShippingMinPrice ? (
                   <div className="text-center ">
-                    Add
+                    {t("Cart.Add")}{" "}
                     <span className="text-green-700">
                       <ProductPrice
-                        price={FREE_SHIPPING_MIN_PRICE - itemsPrice}
+                        price={freeShippingMinPrice - itemsPrice}
                         plain
                       />
                     </span>{" "}
-                    of eligible items to your order to qualify for FREE
-                    Shipping"
+                    {t(
+                      "Cart.of eligible items to your order to qualify for FREE Shipping"
+                    )}
                   </div>
                 ) : (
                   <div className="flex items-center">
@@ -99,7 +105,7 @@ export default function CartAddItem({ itemId }: { itemId: string }) {
                     "rounded-full w-full"
                   )}
                 >
-                  Go to Cart
+                  {t("Cart.Go to Cart")}
                 </Link>
               </div>
             </div>

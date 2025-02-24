@@ -212,7 +212,7 @@ export async function getOrderById(orderId: string): Promise<IOrder> {
   return JSON.parse(JSON.stringify(order));
 }
 
-export const calcDeliveryDateAndPrice = async ({
+export const calculateDeliveryDateAndPrice = async ({
   items,
   shippingAddress,
   deliveryDateIndex,

@@ -113,7 +113,7 @@ export default function PaymentMethodForm({
             variant={"outline"}
             onClick={() => append({ name: "", commission: 0 })}
           >
-            Add PaymentMethod
+            Add Payment Method
           </Button>
         </div>
 

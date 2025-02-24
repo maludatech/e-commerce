@@ -3,6 +3,7 @@ import { connectToDb } from "@/utils/database";
 import Product from "./models/product.model";
 import User from "./models/user.model";
 import Review from "./models/review.model";
+import WebPage, { IWebPage } from "./models/web-page.model";
 import { cwd } from "process";
 import { loadEnvConfig } from "@next/env";
 import Order from "./models/order.model";
@@ -19,7 +20,7 @@ loadEnvConfig(cwd());
 
 const main = async () => {
   try {
-    const { products, users, reviews } = data;
+    const { products, users, reviews, webPages } = data;
     await connectToDb();
 
     await User.deleteMany();
@@ -51,6 +52,9 @@ const main = async () => {
     }
     const createdReviews = await Review.insertMany(rws);
 
+    await WebPage.deleteMany();
+    const createdWebPages = await WebPage.insertMany(webPages);
+
     await Order.deleteMany();
     const orders = [];
     for (let i = 0; i < 200; i++) {
@@ -67,6 +71,7 @@ const main = async () => {
       createdProducts,
       createdUsers,
       createdReviews,
+      createdWebPages,
       message: "Seeded database successfully",
     });
     process.exit(0);

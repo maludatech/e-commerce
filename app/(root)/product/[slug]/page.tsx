@@ -11,7 +11,7 @@ import Rating from "@/components/shared/product/rating";
 import ProductSlider from "@/components/shared/product/product-slider";
 import BrowsingHistoryList from "@/components/shared/browsing-history-list";
 import AddToBrowsingHistory from "@/components/shared/product/add-to-browsing-history";
-import AddToCart from "@/components/shared/product/add-to-card";
+import AddToCart from "@/components/shared/product/add-to-cart";
 import { generateId, round2 } from "@/lib/utils";
 import RatingSummary from "@/components/shared/product/rating-summary";
 import ReviewList from "./review-list";

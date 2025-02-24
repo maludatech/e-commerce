@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ import {
 import useCartStore from "@/hooks/use-cart-store";
 import { useToast } from "@/hooks/use-toast";
 import { OrderItem } from "@/types";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -29,6 +31,8 @@ export default function AddToCart({
   //PROMPT: add quantity state
   const [quantity, setQuantity] = useState(1);
 
+  const t = useTranslations();
+
   return minimal ? (
     <Button
       className="rounded-full w-auto"
@@ -36,14 +40,14 @@ export default function AddToCart({
         try {
           addItem(item, 1);
           toast({
-            description: "Added to Cart",
+            description: t("Product.Added to Cart"),
             action: (
               <Button
                 onClick={() => {
                   router.push("/cart");
                 }}
               >
-                Go to Cart
+                {t("Product.Go to Cart")}
               </Button>
             ),
           });
@@ -55,7 +59,7 @@ export default function AddToCart({
         }
       }}
     >
-      Add to Cart
+      {t("Product.Add to Cart")}
     </Button>
   ) : (
     <div className="w-full space-y-2">
@@ -65,7 +69,7 @@ export default function AddToCart({
       >
         <SelectTrigger className="">
           <SelectValue>
-            {"Quantity"}: {quantity}
+            {t("Product.Quantity")}: {quantity}
           </SelectValue>
         </SelectTrigger>
         <SelectContent position="popper">
@@ -92,7 +96,7 @@ export default function AddToCart({
           }
         }}
       >
-        Add to Cart
+        {t("Product.Add to Cart")}
       </Button>
       <Button
         variant="secondary"
@@ -109,7 +113,7 @@ export default function AddToCart({
         }}
         className="w-full rounded-full "
       >
-        Buy Now
+        {t("Product.Buy Now")}
       </Button>
     </div>
   );

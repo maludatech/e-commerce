@@ -10,7 +10,7 @@ export const PAGE_SIZE = Number(process.env.PAGE_SIZE || 9);
 
 export const APP_DESCRIPTION =
   process.env.NEXT_PUBLIC_APP_DESCRIPTION ||
-  "E-commerce website built using Next.JS and MongoDB";
+  "Your favorite boutique for male and female wears & accessories";
 
 export const FREE_SHIPPING_MIN_PRICE = Number(
   process.env.FREE_SHIPPING_MIN_PRICE || 35

@@ -1,16 +1,125 @@
 "use server";
 
 import { connectToDb } from "@/utils/database";
-import { IProduct } from "@/db/models/product.model";
-import Product from "@/db/models/product.model";
-import { PAGE_SIZE } from "../constants";
+import Product, { IProduct } from "@/db/models/product.model";
 import { revalidatePath } from "next/cache";
 import { formatError } from "../utils";
 import { ProductInputSchema, ProductUpdateSchema } from "../validator";
-import { z } from "zod";
 import { IProductInput } from "@/types";
+import { z } from "zod";
+import { getSetting } from "./setting.actions";
 
-// GET ALL CATEGORIES
+// CREATE
+export async function createProduct(data: IProductInput) {
+  try {
+    const product = ProductInputSchema.parse(data);
+    await connectToDb();
+    await Product.create(product);
+    revalidatePath("/admin/products");
+    return {
+      success: true,
+      message: "Product created successfully",
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+}
+
+// UPDATE
+export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>) {
+  try {
+    const product = ProductUpdateSchema.parse(data);
+    await connectToDb();
+    await Product.findByIdAndUpdate(product._id, product);
+    revalidatePath("/admin/products");
+    return {
+      success: true,
+      message: "Product updated successfully",
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+}
+// DELETE
+export async function deleteProduct(id: string) {
+  try {
+    await connectToDb();
+    const res = await Product.findByIdAndDelete(id);
+    if (!res) throw new Error("Product not found");
+    revalidatePath("/admin/products");
+    return {
+      success: true,
+      message: "Product deleted successfully",
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+}
+// GET ONE PRODUCT BY ID
+export async function getProductById(productId: string) {
+  await connectToDb();
+  const product = await Product.findById(productId);
+  return JSON.parse(JSON.stringify(product)) as IProduct;
+}
+
+// GET ALL PRODUCTS FOR ADMIN
+export async function getAllProductsForAdmin({
+  query,
+  page = 1,
+  sort = "latest",
+  limit,
+}: {
+  query: string;
+  page?: number;
+  sort?: string;
+  limit?: number;
+}) {
+  await connectToDb();
+
+  const {
+    common: { pageSize },
+  } = await getSetting();
+  limit = limit || pageSize;
+  const queryFilter =
+    query && query !== "all"
+      ? {
+          name: {
+            $regex: query,
+            $options: "i",
+          },
+        }
+      : {};
+
+  const order: Record<string, 1 | -1> =
+    sort === "best-selling"
+      ? { numSales: -1 }
+      : sort === "price-low-to-high"
+        ? { price: 1 }
+        : sort === "price-high-to-low"
+          ? { price: -1 }
+          : sort === "avg-customer-review"
+            ? { avgRating: -1 }
+            : { _id: -1 };
+  const products = await Product.find({
+    ...queryFilter,
+  })
+    .sort(order)
+    .skip(limit * (Number(page) - 1))
+    .limit(limit)
+    .lean();
+
+  const countProducts = await Product.countDocuments({
+    ...queryFilter,
+  });
+  return {
+    products: JSON.parse(JSON.stringify(products)) as IProduct[],
+    totalPages: Math.ceil(countProducts / pageSize),
+    totalProducts: countProducts,
+    from: pageSize * (Number(page) - 1) + 1,
+    to: pageSize * (Number(page) - 1) + products.length,
+  };
+}
+
 export async function getAllCategories() {
   await connectToDb();
   const categories = await Product.find({ isPublished: true }).distinct(
@@ -18,8 +127,6 @@ export async function getAllCategories() {
   );
   return categories;
 }
-
-// GET PRODUCTS FOR CARD
 export async function getProductsForCard({
   tag,
   limit = 4,
@@ -44,7 +151,6 @@ export async function getProductsForCard({
     image: string;
   }[];
 }
-
 // GET PRODUCTS BY TAG
 export async function getProductsByTag({
   tag,
@@ -70,12 +176,11 @@ export async function getProductBySlug(slug: string) {
   if (!product) throw new Error("Product not found");
   return JSON.parse(JSON.stringify(product)) as IProduct;
 }
-
 // GET RELATED PRODUCTS: PRODUCTS WITH SAME CATEGORY
 export async function getRelatedProductsByCategory({
   category,
   productId,
-  limit = 5,
+  limit = 4,
   page = 1,
 }: {
   category: string;
@@ -83,6 +188,10 @@ export async function getRelatedProductsByCategory({
   limit?: number;
   page: number;
 }) {
+  const {
+    common: { pageSize },
+  } = await getSetting();
+  limit = limit || pageSize;
   await connectToDb();
   const skipAmount = (Number(page) - 1) * limit;
   const conditions = {
@@ -101,6 +210,7 @@ export async function getRelatedProductsByCategory({
   };
 }
 
+// GET ALL PRODUCTS
 export async function getAllProducts({
   query,
   limit,
@@ -120,11 +230,10 @@ export async function getAllProducts({
   rating?: string;
   sort?: string;
 }) {
-  // const {
-  //   common: { pageSize },
-  // } = await getSetting();
-
-  limit = limit || PAGE_SIZE;
+  const {
+    common: { pageSize },
+  } = await getSetting();
+  limit = limit || pageSize;
   await connectToDb();
 
   const queryFilter =
@@ -153,7 +262,7 @@ export async function getAllProducts({
       ? {
           price: {
             $gte: Number(price.split("-")[0]),
-            $lte: Number(price.split("-")[1]), //Example: 100 - 500 dollars
+            $lte: Number(price.split("-")[1]),
           },
         }
       : {};
@@ -213,113 +322,4 @@ export async function getAllTags() {
           .join(" ")
       ) as string[]) || []
   );
-}
-
-// DELETE
-export async function deleteProduct(id: string) {
-  try {
-    await connectToDb();
-    const res = await Product.findByIdAndDelete(id);
-    if (!res) throw new Error("Product not found");
-    revalidatePath("/admin/products");
-    return {
-      success: true,
-      message: "Product deleted successfully",
-    };
-  } catch (error) {
-    return { success: false, message: formatError(error) };
-  }
-}
-
-// GET ALL PRODUCTS FOR ADMIN
-export async function getAllProductsForAdmin({
-  query,
-  page = 1,
-  sort = "latest",
-  limit,
-}: {
-  query: string;
-  page?: number;
-  sort?: string;
-  limit?: number;
-}) {
-  await connectToDb();
-
-  const pageSize = limit || PAGE_SIZE;
-  const queryFilter =
-    query && query !== "all"
-      ? {
-          name: {
-            $regex: query,
-            $options: "i",
-          },
-        }
-      : {};
-
-  const order: Record<string, 1 | -1> =
-    sort === "best-selling"
-      ? { numSales: -1 }
-      : sort === "price-low-to-high"
-        ? { price: 1 }
-        : sort === "price-high-to-low"
-          ? { price: -1 }
-          : sort === "avg-customer-review"
-            ? { avgRating: -1 }
-            : { _id: -1 };
-  const products = await Product.find({
-    ...queryFilter,
-  })
-    .sort(order)
-    .skip(pageSize * (Number(page) - 1))
-    .limit(pageSize)
-    .lean();
-
-  const countProducts = await Product.countDocuments({
-    ...queryFilter,
-  });
-  return {
-    products: JSON.parse(JSON.stringify(products)) as IProduct[],
-    totalPages: Math.ceil(countProducts / pageSize),
-    totalProducts: countProducts,
-    from: pageSize * (Number(page) - 1) + 1,
-    to: pageSize * (Number(page) - 1) + products.length,
-  };
-}
-
-// CREATE
-export async function createProduct(data: IProductInput) {
-  try {
-    const product = ProductInputSchema.parse(data);
-    await connectToDb();
-    await Product.create(product);
-    revalidatePath("/admin/products");
-    return {
-      success: true,
-      message: "Product created successfully",
-    };
-  } catch (error) {
-    return { success: false, message: formatError(error) };
-  }
-}
-
-// UPDATE
-export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>) {
-  try {
-    const product = ProductUpdateSchema.parse(data);
-    await connectToDb();
-    await Product.findByIdAndUpdate(product._id, product);
-    revalidatePath("/admin/products");
-    return {
-      success: true,
-      message: "Product updated successfully",
-    };
-  } catch (error) {
-    return { success: false, message: formatError(error) };
-  }
-}
-// GET ONE PRODUCT BY ID
-export async function getProductById(productId: string) {
-  await connectToDb();
-  const product = await Product.findById(productId);
-  return JSON.parse(JSON.stringify(product)) as IProduct;
 }

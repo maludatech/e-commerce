@@ -154,11 +154,15 @@ const WebPageForm = ({
                 <FormLabel>Content</FormLabel>
                 <FormControl>
                   <MDEditor
-                    // value={markdown}
                     {...field}
                     style={{ height: "500px" }}
-                    renderHTML={(text) => <ReactMarkdown>{text}</ReactMarkdown>}
-                    onChange={({ text }) => form.setValue("content", text)}
+                    value={field.value} // Ensure MDEditor gets the correct value
+                    onChange={(text) => form.setValue("content", text || "")} // Handle undefined case
+                    // previewOptions={{
+                    //   transformMarkdown: (source) => (
+                    //     <ReactMarkdown>{source}</ReactMarkdown>
+                    //   ),
+                    // }}
                   />
 
                   {/* <Textarea placeholder='Enter content' {...field} /> */}

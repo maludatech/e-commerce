@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-// import { createOrder } from "@/lib/actions/order.actions";
+import { createOrder } from "@/lib/actions/order.actions";
 import {
   calculateFutureDate,
   formatDateTime,
@@ -37,26 +37,19 @@ import { ShippingAddress } from "@/types";
 import useIsMounted from "@/hooks/use-is-mounted";
 import Link from "next/link";
 import useCartStore from "@/hooks/use-cart-store";
-// import useSettingStore from "@/hooks/use-setting-store";
+import useSettingStore from "@/hooks/use-setting-store";
 import ProductPrice from "@/components/shared/product/product-price";
-import {
-  APP_NAME,
-  AVAILABLE_DELIVERY_DATES,
-  AVAILABLE_PAYMENT_METHODS,
-  DEFAULT_PAYMENT_METHOD,
-} from "@/lib/constants";
-import { createOrder } from "@/lib/actions/order.actions";
 
 const shippingAddressDefaultValues =
   process.env.NODE_ENV === "development"
     ? {
-        fullName: "Maluda",
-        street: "No.103, Odim street",
-        city: "Nsukka",
-        province: "Enugu",
-        phone: "08163887385",
-        postalCode: "410113",
-        country: "Nigeria",
+        fullName: "Basir",
+        street: "1911, 65 Sherbrooke Est",
+        city: "Montreal",
+        province: "Quebec",
+        phone: "4181234567",
+        postalCode: "H2X 1C4",
+        country: "Canada",
       }
     : {
         fullName: "",
@@ -71,14 +64,14 @@ const shippingAddressDefaultValues =
 const CheckoutForm = () => {
   const { toast } = useToast();
   const router = useRouter();
-  //   const {
-  //     setting: {
-  //       site,
-  //       availablePaymentMethods,
-  //       defaultPaymentMethod,
-  //       availableDeliveryDates,
-  //     },
-  //   } = useSettingStore();
+  const {
+    setting: {
+      site,
+      availablePaymentMethods,
+      defaultPaymentMethod,
+      availableDeliveryDates,
+    },
+  } = useSettingStore();
 
   const {
     cart: {
@@ -89,7 +82,7 @@ const CheckoutForm = () => {
       totalPrice,
       shippingAddress,
       deliveryDateIndex,
-      paymentMethod = DEFAULT_PAYMENT_METHOD,
+      paymentMethod = defaultPaymentMethod,
     },
     setShippingAddress,
     setPaymentMethod,
@@ -104,7 +97,6 @@ const CheckoutForm = () => {
     resolver: zodResolver(ShippingAddressSchema),
     defaultValues: shippingAddress || shippingAddressDefaultValues,
   });
-
   const onSubmitShippingAddress: SubmitHandler<ShippingAddress> = (values) => {
     setShippingAddress(values);
     setIsAddressSelected(true);
@@ -132,7 +124,7 @@ const CheckoutForm = () => {
       items,
       shippingAddress,
       expectedDeliveryDate: calculateFutureDate(
-        AVAILABLE_DELIVERY_DATES[deliveryDateIndex!].daysToDeliver
+        availableDeliveryDates[deliveryDateIndex!].daysToDeliver
       ),
       deliveryDateIndex,
       paymentMethod,
@@ -155,16 +147,13 @@ const CheckoutForm = () => {
       router.push(`/checkout/${res.data?.orderId}`);
     }
   };
-
   const handleSelectPaymentMethod = () => {
     setIsAddressSelected(true);
     setIsPaymentMethodSelected(true);
   };
-
   const handleSelectShippingAddress = () => {
     shippingAddressForm.handleSubmit(onSubmitShippingAddress)();
   };
-
   const CheckoutSummary = () => (
     <Card>
       <CardContent className="p-4">
@@ -204,7 +193,7 @@ const CheckoutForm = () => {
               Place Your Order
             </Button>
             <p className="text-xs text-center py-2">
-              By placing your order, you agree to {APP_NAME}&apos;s{" "}
+              By placing your order, you agree to {site.name}&apos;s{" "}
               <Link href="/page/privacy-policy">privacy notice</Link> and
               <Link href="/page/conditions-of-use"> conditions of use</Link>.
             </p>
@@ -261,7 +250,7 @@ const CheckoutForm = () => {
           {/* shipping address */}
           <div>
             {isAddressSelected && shippingAddress ? (
-              <div className="grid grid-cols-1 md:grid-cols-12 my-3 pb-3">
+              <div className="grid grid-cols-1 md:grid-cols-12    my-3  pb-3">
                 <div className="col-span-5 flex text-lg font-bold ">
                   <span className="w-8">1 </span>
                   <span>Shipping address</span>
@@ -473,7 +462,7 @@ const CheckoutForm = () => {
                       value={paymentMethod}
                       onValueChange={(value) => setPaymentMethod(value)}
                     >
-                      {AVAILABLE_PAYMENT_METHODS.map((pm) => (
+                      {availablePaymentMethods.map((pm) => (
                         <div key={pm.name} className="flex items-center py-1 ">
                           <RadioGroupItem
                             value={pm.name}
@@ -520,7 +509,7 @@ const CheckoutForm = () => {
                     {
                       formatDateTime(
                         calculateFutureDate(
-                          AVAILABLE_DELIVERY_DATES[deliveryDateIndex]
+                          availableDeliveryDates[deliveryDateIndex]
                             .daysToDeliver
                         )
                       ).dateOnly
@@ -560,7 +549,7 @@ const CheckoutForm = () => {
                         {
                           formatDateTime(
                             calculateFutureDate(
-                              AVAILABLE_DELIVERY_DATES[deliveryDateIndex!]
+                              availableDeliveryDates[deliveryDateIndex!]
                                 .daysToDeliver
                             )
                           ).dateOnly
@@ -629,18 +618,17 @@ const CheckoutForm = () => {
                           <ul>
                             <RadioGroup
                               value={
-                                AVAILABLE_DELIVERY_DATES[deliveryDateIndex!]
-                                  .name
+                                availableDeliveryDates[deliveryDateIndex!].name
                               }
                               onValueChange={(value) =>
                                 setDeliveryDateIndex(
-                                  AVAILABLE_DELIVERY_DATES.findIndex(
+                                  availableDeliveryDates.findIndex(
                                     (address) => address.name === value
                                   )!
                                 )
                               }
                             >
-                              {AVAILABLE_DELIVERY_DATES.map((dd) => (
+                              {availableDeliveryDates.map((dd) => (
                                 <div key={dd.name} className="flex">
                                   <RadioGroupItem
                                     value={dd.name}
@@ -705,7 +693,9 @@ const CheckoutForm = () => {
                     </p>
                     <p className="text-xs">
                       {" "}
-                      By placing your order, you agree to {APP_NAME}&apos;s{" "}
+                      By placing your order, you agree to {
+                        site.name
+                      }&apos;s{" "}
                       <Link href="/page/privacy-policy">privacy notice</Link>{" "}
                       and
                       <Link href="/page/conditions-of-use">

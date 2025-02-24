@@ -40,7 +40,7 @@ export const createOrderFromCart = async (
 ) => {
   const cart = {
     ...clientSideCart,
-    ...calcDeliveryDateAndPrice({
+    ...calculateDeliveryDateAndPrice({
       items: clientSideCart.items,
       shippingAddress: clientSideCart.shippingAddress,
       deliveryDateIndex: clientSideCart.deliveryDateIndex,

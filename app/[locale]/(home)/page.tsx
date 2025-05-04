@@ -70,7 +70,6 @@ export default async function HomePage() {
 
   return (
     <>
-    {/* bug fix */}
       <HomeCarousel items={carousels} />
       <div className="md:p-4 md:space-y-4 bg-border">
         <HomeCard cards={cards} />

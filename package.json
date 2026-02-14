@@ -2,6 +2,7 @@
   "name": "steeze-boutique",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "email": "email dev",
     "seed": "npx tsx ./db/seed.ts",

@@ -112,14 +112,18 @@ export default function ReviewList({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
 
-  type CustomerReview = z.infer<typeof ReviewInputSchema>;
-  const form = useForm<CustomerReview>({
+  type CustomerReviewInput = z.input<typeof ReviewInputSchema>;
+  type CustomerReviewOutput = z.output<typeof ReviewInputSchema>;
+
+  const form = useForm<CustomerReviewInput, any, CustomerReviewOutput>({
     resolver: zodResolver(ReviewInputSchema),
-    defaultValues: reviewFormDefaultValues,
+    defaultValues: reviewFormDefaultValues as CustomerReviewInput,
   });
+
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
-  const onSubmit: SubmitHandler<CustomerReview> = async (values) => {
+
+  const onSubmit = async (values: CustomerReviewOutput) => {
     const res = await createUpdateReview({
       data: { ...values, product: product._id },
       path: `/product/${product.slug}`,
@@ -235,7 +239,7 @@ export default function ReviewList({
                                 <FormLabel>{t("Rating")}</FormLabel>
                                 <Select
                                   onValueChange={field.onChange}
-                                  value={field.value.toString()}
+                                  value={String(field.value ?? "")}
                                 >
                                   <FormControl>
                                     <SelectTrigger>
@@ -256,7 +260,7 @@ export default function ReviewList({
                                             <StarIcon className="h-4 w-4" />
                                           </div>
                                         </SelectItem>
-                                      )
+                                      ),
                                     )}
                                   </SelectContent>
                                 </Select>

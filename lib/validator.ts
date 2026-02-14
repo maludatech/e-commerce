@@ -11,7 +11,7 @@ const Price = (field: string) =>
     .number()
     .refine(
       (value) => /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(value)),
-      `${field} must have exactly two decimal places (e.g., 49.99)`
+      `${field} must have exactly two decimal places (e.g., 49.99)`,
     );
 
 export const ReviewInputSchema = z.object({
@@ -128,7 +128,7 @@ export const OrderInputSchema = z.object({
     .date()
     .refine(
       (value) => value > new Date(),
-      "Expected delivery date must be in the future"
+      "Expected delivery date must be in the future",
     ),
   isDelivered: z.boolean().default(false),
   deliveredAt: z.date().optional(),

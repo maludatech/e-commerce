@@ -50,10 +50,7 @@ const WebPageForm = ({
   const router = useRouter();
 
   const form = useForm<z.infer<typeof WebPageInputSchema>>({
-    resolver:
-      type === "Update"
-        ? zodResolver(WebPageUpdateSchema)
-        : zodResolver(WebPageInputSchema),
+    resolver: zodResolver(WebPageInputSchema),
     defaultValues:
       webPage && type === "Update" ? webPage : webPageDefaultValues,
   });

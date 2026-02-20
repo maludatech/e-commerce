@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Link from "next/link";
 
@@ -121,13 +120,13 @@ const ProductList = () => {
                 <TableHead>Rating</TableHead>
                 <TableHead>Published</TableHead>
                 <TableHead>Last Update</TableHead>
-                <TableHead className="w-[100px]">Actions</TableHead>
+                <TableHead className="w-25">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {data?.products.map((product: IProduct) => (
-                <TableRow key={product._id}>
-                  <TableCell>{formatId(product._id)}</TableCell>
+                <TableRow key={product._id.toString()}>
+                  <TableCell>{formatId(product._id.toString())}</TableCell>
                   <TableCell>
                     <Link href={`/admin/products/${product._id}`}>
                       {product.name}
@@ -151,7 +150,7 @@ const ProductList = () => {
                       </Link>
                     </Button>
                     <DeleteDialog
-                      id={product._id}
+                      id={product._id.toString()}
                       action={deleteProduct}
                       callbackAction={() => {
                         startTransition(async () => {

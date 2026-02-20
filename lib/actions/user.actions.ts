@@ -12,6 +12,13 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { getSetting } from "./setting.actions";
 
+interface IUserDTO {
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
+}
+
 // CREATE
 export async function registerUser(userSignUp: IUserSignUp) {
   try {
@@ -106,7 +113,7 @@ export async function getAllUsers({
 }: {
   limit?: number;
   page: number;
-}) {
+}): Promise<{ data: IUserDTO[]; totalPages: number }> {
   const {
     common: { pageSize },
   } = await getSetting();
@@ -118,16 +125,21 @@ export async function getAllUsers({
     .sort({ createdAt: "desc" })
     .skip(skipAmount)
     .limit(limit);
+
   const usersCount = await User.countDocuments();
+
   return {
-    data: JSON.parse(JSON.stringify(users)) as IUser[],
+    data: users.map((u) => ({ ...u.toObject(), _id: u._id.toString() })),
     totalPages: Math.ceil(usersCount / limit),
   };
 }
-
-export async function getUserById(userId: string) {
+export async function getUserById(userId: string): Promise<IUserDTO> {
   await connectToDb();
   const user = await User.findById(userId);
   if (!user) throw new Error("User not found");
-  return JSON.parse(JSON.stringify(user)) as IUser;
+
+  return {
+    ...user.toObject(),
+    _id: user._id.toString(),
+  };
 }

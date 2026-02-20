@@ -25,10 +25,16 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { updateUser } from "@/lib/actions/user.actions";
 import { USER_ROLES } from "@/lib/constants";
-import { IUser } from "@/db/models/user.model";
 import { UserUpdateSchema } from "@/lib/validator";
 
-const UserEditForm = ({ user }: { user: IUser }) => {
+interface IUserDTO {
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
+}
+
+const UserEditForm = ({ user }: { user: IUserDTO }) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof UserUpdateSchema>>({
@@ -41,7 +47,7 @@ const UserEditForm = ({ user }: { user: IUser }) => {
     try {
       const res = await updateUser({
         ...values,
-        _id: user._id,
+        _id: user._id.toString(),
       });
       if (!res.success)
         return toast({

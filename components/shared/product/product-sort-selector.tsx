@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/select";
 import { getFilterUrl } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import React from "react";
 
 export default function ProductSortSelector({
   sortOrders,

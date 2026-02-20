@@ -1,6 +1,5 @@
 import useSettingStore from "@/hooks/use-setting-store";
 import Link from "next/link";
-import React from "react";
 
 export default function CheckoutFooter() {
   const {

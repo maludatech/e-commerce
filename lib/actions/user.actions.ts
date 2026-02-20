@@ -12,7 +12,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { getSetting } from "./setting.actions";
 
-interface IUserDTO {
+export interface IUserDTO {
   _id: string;
   name: string;
   email: string;

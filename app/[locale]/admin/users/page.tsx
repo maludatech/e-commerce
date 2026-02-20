@@ -13,7 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { deleteUser, getAllUsers } from "@/lib/actions/user.actions";
+import { deleteUser, getAllUsers, IUserDTO } from "@/lib/actions/user.actions";
 import { IUser } from "@/db/models/user.model";
 import { formatId } from "@/lib/utils";
 
@@ -47,9 +47,9 @@ export default async function AdminUser(props: {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {users?.data.map((user: IUser) => (
-              <TableRow key={user._id.toString()}>
-                <TableCell>{formatId(user._id.toString())}</TableCell>
+            {users?.data.map((user: IUserDTO) => (
+              <TableRow key={user._id}>
+                <TableCell>{formatId(user._id)}</TableCell>
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.role}</TableCell>
@@ -57,7 +57,7 @@ export default async function AdminUser(props: {
                   <Button asChild variant="outline" size="sm">
                     <Link href={`/admin/users/${user._id}`}>Edit</Link>
                   </Button>
-                  <DeleteDialog id={user._id.toString()} action={deleteUser} />
+                  <DeleteDialog id={user._id} action={deleteUser} />
                 </TableCell>
               </TableRow>
             ))}

@@ -33,17 +33,17 @@ export default async function WebPageAdminPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px]">Id</TableHead>
+              <TableHead className="w-25">Id</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Slug</TableHead>
               <TableHead>IsPublished</TableHead>
-              <TableHead className="w-[100px]">Actions</TableHead>
+              <TableHead className="w-25">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {webPages.map((webPage: IWebPage) => (
-              <TableRow key={webPage._id}>
-                <TableCell>{formatId(webPage._id)}</TableCell>
+              <TableRow key={webPage._id.toString()}>
+                <TableCell>{formatId(webPage._id.toString())}</TableCell>
                 <TableCell>{webPage.title}</TableCell>
                 <TableCell>{webPage.slug}</TableCell>
                 <TableCell>{webPage.isPublished ? "Yes" : "No"}</TableCell>
@@ -51,7 +51,10 @@ export default async function WebPageAdminPage() {
                   <Button asChild variant="outline" size="sm">
                     <Link href={`/admin/web-pages/${webPage._id}`}>Edit</Link>
                   </Button>
-                  <DeleteDialog id={webPage._id} action={deleteWebPage} />
+                  <DeleteDialog
+                    id={webPage._id.toString()}
+                    action={deleteWebPage}
+                  />
                 </TableCell>
               </TableRow>
             ))}

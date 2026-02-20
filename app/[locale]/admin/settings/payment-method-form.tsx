@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ISettingInput } from "@/types";
+import { ISettingInput, SettingFormInput, SettingFormOutput } from "@/types";
 import { TrashIcon } from "lucide-react";
 import React, { useEffect } from "react";
 import { useFieldArray, UseFormReturn } from "react-hook-form";
@@ -24,7 +24,7 @@ export default function PaymentMethodForm({
   form,
   id,
 }: {
-  form: UseFormReturn<ISettingInput>;
+  form: UseFormReturn<SettingFormInput, any, SettingFormOutput>;
   id: string;
 }) {
   const { fields, append, remove } = useFieldArray({
@@ -80,7 +80,12 @@ export default function PaymentMethodForm({
                   <FormItem>
                     {index == 0 && <FormLabel>Commission</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder="Commission" />
+                      <Input
+                        type="number"
+                        placeholder="Commission"
+                        {...field}
+                        value={(field.value as string | undefined) ?? ""}
+                      />
                     </FormControl>
                     <FormMessage>
                       {

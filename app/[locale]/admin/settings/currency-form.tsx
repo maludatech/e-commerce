@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ISettingInput } from "@/types";
+import { ISettingInput, SettingFormInput, SettingFormOutput } from "@/types";
 import { TrashIcon } from "lucide-react";
 import React, { useEffect } from "react";
 import { useFieldArray, UseFormReturn } from "react-hook-form";
@@ -24,7 +24,7 @@ export default function CurrencyForm({
   form,
   id,
 }: {
-  form: UseFormReturn<ISettingInput>;
+  form: UseFormReturn<SettingFormInput, any, SettingFormOutput>;
   id: string;
 }) {
   const { fields, append, remove } = useFieldArray({
@@ -113,7 +113,12 @@ export default function CurrencyForm({
                   <FormItem>
                     {index == 0 && <FormLabel>Convert Rate</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder="Convert Rate" />
+                      <Input
+                        type="text"
+                        placeholder="Convert Rate"
+                        {...field}
+                        value={(field.value as string | undefined) ?? ""}
+                      />
                     </FormControl>
                     <FormMessage>
                       {

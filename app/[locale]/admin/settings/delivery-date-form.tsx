@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ISettingInput } from "@/types";
+import { ISettingInput, SettingFormInput, SettingFormOutput } from "@/types";
 import { TrashIcon } from "lucide-react";
 import React, { useEffect } from "react";
 import { useFieldArray, UseFormReturn } from "react-hook-form";
@@ -25,7 +25,7 @@ export default function DeliveryDateForm({
   form,
   id,
 }: {
-  form: UseFormReturn<ISettingInput>;
+  form: UseFormReturn<SettingFormInput, any, SettingFormOutput>;
   id: string;
 }) {
   const { fields, append, remove } = useFieldArray({
@@ -98,7 +98,12 @@ export default function DeliveryDateForm({
                   <FormItem>
                     {index == 0 && <FormLabel>Shipping Price</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder="shippingPrice" />
+                      <Input
+                        type="text"
+                        placeholder="shippingPrice"
+                        {...field}
+                        value={(field.value as string | undefined) ?? ""}
+                      />
                     </FormControl>
                     <FormMessage>
                       {
@@ -116,7 +121,12 @@ export default function DeliveryDateForm({
                   <FormItem>
                     {index == 0 && <FormLabel>Free Shipping</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder="freeShippingMinPrice" />
+                      <Input
+                        type="text"
+                        placeholder="freeShippingMinPrice"
+                        {...field}
+                        value={(field.value as string | undefined) ?? ""}
+                      />
                     </FormControl>
                     <FormMessage>
                       {

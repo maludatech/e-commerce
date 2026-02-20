@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { COLORS, THEMES } from "@/lib/constants";
-import { ISettingInput } from "@/types";
+import { ISettingInput, SettingFormInput, SettingFormOutput } from "@/types";
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
 
@@ -25,7 +25,7 @@ export default function CommonForm({
   form,
   id,
 }: {
-  form: UseFormReturn<ISettingInput>;
+  form: UseFormReturn<SettingFormInput, any, SettingFormOutput>;
   id: string;
 }) {
   const { control } = form;
@@ -44,7 +44,12 @@ export default function CommonForm({
               <FormItem className="w-full">
                 <FormLabel>Page Size</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter Page Size" {...field} />
+                  <Input
+                    type="text"
+                    placeholder="Enter Page Size"
+                    {...field}
+                    value={(field.value as string | undefined) ?? ""}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -58,8 +63,10 @@ export default function CommonForm({
                 <FormLabel>Free Shipping Minimum Price</FormLabel>
                 <FormControl>
                   <Input
+                    type="text"
                     placeholder="Enter Free Shipping Minimum Price"
                     {...field}
+                    value={(field.value as string | undefined) ?? ""}
                   />
                 </FormControl>
                 <FormMessage />

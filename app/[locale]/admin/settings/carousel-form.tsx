@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { UploadButton } from "@/lib/uploadthing";
-import { ISettingInput } from "@/types";
+import { ISettingInput, SettingFormInput, SettingFormOutput } from "@/types";
 import { TrashIcon } from "lucide-react";
 import Image from "next/image";
 import { useFieldArray, UseFormReturn } from "react-hook-form";
@@ -19,7 +19,7 @@ export default function CarouselForm({
   form,
   id,
 }: {
-  form: UseFormReturn<ISettingInput>;
+  form: UseFormReturn<SettingFormInput, any, SettingFormOutput>;
   id: string;
 }) {
   const { fields, append, remove } = useFieldArray({

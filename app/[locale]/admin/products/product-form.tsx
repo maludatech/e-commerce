@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -81,17 +82,32 @@ const ProductForm = ({
 }) => {
   const router = useRouter();
 
-  const form = useForm<IProductInput>({
-    resolver:
-      type === "Update"
-        ? zodResolver(ProductUpdateSchema)
-        : zodResolver(ProductInputSchema),
+  function mapProductToFormInput(product: ProductFormOutput): ProductFormInput {
+    return {
+      ...product,
+      price: product.price != null ? product.price.toFixed(2) : "",
+      listPrice: product.listPrice != null ? product.listPrice.toFixed(2) : "",
+      countInStock:
+        product.countInStock != null ? String(product.countInStock) : "0",
+      avgRating: product.avgRating != null ? product.avgRating.toFixed(2) : "",
+      numReviews: product.numReviews != null ? String(product.numReviews) : "0",
+      numSales: product.numSales != null ? String(product.numSales) : "0",
+    } as ProductFormInput;
+  }
+
+  type ProductFormInput = z.input<typeof ProductInputSchema>;
+  type ProductFormOutput = z.output<typeof ProductInputSchema>;
+
+  const form = useForm<ProductFormInput, any, ProductFormOutput>({
+    resolver: zodResolver(ProductInputSchema),
     defaultValues:
-      product && type === "Update" ? product : productDefaultValues,
+      product && type === "Update"
+        ? mapProductToFormInput(product)
+        : productDefaultValues,
   });
 
   const { toast } = useToast();
-  async function onSubmit(values: IProductInput) {
+  async function onSubmit(values: ProductFormOutput) {
     if (type === "Create") {
       const res = await createProduct(values);
       if (!res.success) {
@@ -122,6 +138,7 @@ const ProductForm = ({
       }
     }
   }
+
   const images = form.watch("images");
 
   console.log(form.formState.errors);
@@ -217,7 +234,12 @@ const ProductForm = ({
               <FormItem className="w-full">
                 <FormLabel>List Price</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter product list price" {...field} />
+                  <Input
+                    type="text"
+                    placeholder="Enter product list price"
+                    {...field}
+                    value={field.value as string | undefined}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -230,7 +252,12 @@ const ProductForm = ({
               <FormItem className="w-full">
                 <FormLabel>Net Price</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter product price" {...field} />
+                  <Input
+                    type="text"
+                    placeholder="Enter product price"
+                    {...field}
+                    value={field.value as string | undefined}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -247,6 +274,7 @@ const ProductForm = ({
                     type="number"
                     placeholder="Enter product count in stock"
                     {...field}
+                    value={field.value as string | undefined}
                   />
                 </FormControl>
                 <FormMessage />
@@ -282,7 +310,7 @@ const ProductForm = ({
                             onClick={() => {
                               form.setValue(
                                 "images",
-                                images.filter((img) => img !== image)
+                                images.filter((img) => img !== image),
                               );
                             }}
                           >

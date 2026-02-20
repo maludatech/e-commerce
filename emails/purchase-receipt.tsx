@@ -17,24 +17,60 @@ import {
 import { formatCurrency } from "@/lib/utils";
 import { IOrder } from "@/db/models/order.model";
 import { getSetting } from "@/lib/actions/setting.actions";
+import { Types } from "mongoose";
 
 type OrderInformationProps = {
   order: IOrder;
 };
 
+type EmailOrder = {
+  _id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  isPaid: boolean;
+  paidAt?: Date;
+  totalPrice: number;
+  itemsPrice: number;
+  taxPrice: number;
+  shippingPrice: number;
+  user: { name: string; email: string };
+  shippingAddress: {
+    fullName: string;
+    street: string;
+    city: string;
+    postalCode: string;
+    country: string;
+    phone: string;
+    province: string;
+  };
+  items: {
+    clientId: string;
+    name: string;
+    image: string;
+    price: number;
+    quantity: number;
+    product: string;
+    slug: string;
+    category: string;
+    countInStock: number;
+  }[];
+  paymentMethod: string;
+  expectedDeliveryDate: Date;
+  isDelivered: boolean;
+};
+
 PurchaseReceiptEmail.PreviewProps = {
   order: {
     _id: "123",
+    createdAt: new Date(),
+    updatedAt: new Date(),
     isPaid: true,
     paidAt: new Date(),
     totalPrice: 100,
     itemsPrice: 100,
     taxPrice: 0,
     shippingPrice: 0,
-    user: {
-      name: "John Doe",
-      email: "john.doe@example.com",
-    },
+    user: { name: "John Doe", email: "john.doe@example.com" },
     shippingAddress: {
       fullName: "John Doe",
       street: "123 Main St",
@@ -60,8 +96,8 @@ PurchaseReceiptEmail.PreviewProps = {
     paymentMethod: "PayPal",
     expectedDeliveryDate: new Date(),
     isDelivered: true,
-  } as IOrder,
-} satisfies OrderInformationProps;
+  } as EmailOrder,
+};
 const dateFormatter = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
 
 export default async function PurchaseReceiptEmail({

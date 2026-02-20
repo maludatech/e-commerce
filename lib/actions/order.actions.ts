@@ -23,7 +23,7 @@ export const createOrder = async (clientSideCart: Cart) => {
     // recalculate price and delivery date on the server
     const createdOrder = await createOrderFromCart(
       clientSideCart,
-      session.user.id!
+      session.user.id!,
     );
     return {
       success: true,
@@ -36,7 +36,7 @@ export const createOrder = async (clientSideCart: Cart) => {
 };
 export const createOrderFromCart = async (
   clientSideCart: Cart,
-  userId: string
+  userId: string,
 ) => {
   const cart = {
     ...clientSideCart,
@@ -73,7 +73,7 @@ export async function updateOrderToPaid(orderId: string) {
     order.paidAt = new Date();
     await order.save();
     if (!process.env.MONGODB_URI?.startsWith("mongodb://localhost"))
-      await updateProductStock(order._id);
+      await updateProductStock(order._id.toString());
     if (order.user.email) await sendPurchaseReceipt({ order });
     revalidatePath(`/account/orders/${orderId}`);
     return { success: true, message: "Order paid successfully" };
@@ -91,7 +91,7 @@ const updateProductStock = async (orderId: string) => {
     const order = await Order.findOneAndUpdate(
       { _id: orderId },
       { isPaid: true, paidAt: new Date() },
-      opts
+      opts,
     );
     if (!order) throw new Error("Order not found");
 
@@ -103,7 +103,7 @@ const updateProductStock = async (orderId: string) => {
       await Product.updateOne(
         { _id: product._id },
         { countInStock: product.countInStock },
-        opts
+        opts,
       );
     }
     await session.commitTransaction();
@@ -223,7 +223,7 @@ export const calculateDeliveryDateAndPrice = async ({
 }) => {
   const { availableDeliveryDates } = await getSetting();
   const itemsPrice = round2(
-    items.reduce((acc, item) => acc + item.price * item.quantity, 0)
+    items.reduce((acc, item) => acc + item.price * item.quantity, 0),
   );
 
   const deliveryDate =
@@ -244,7 +244,7 @@ export const calculateDeliveryDateAndPrice = async ({
   const totalPrice = round2(
     itemsPrice +
       (shippingPrice ? round2(shippingPrice) : 0) +
-      (taxPrice ? round2(taxPrice) : 0)
+      (taxPrice ? round2(taxPrice) : 0),
   );
   return {
     availableDeliveryDates,
@@ -305,7 +305,7 @@ export async function getOrderSummary(date: DateRange) {
   const sixMonthEarlierDate = new Date(
     today.getFullYear(),
     today.getMonth() - 5,
-    1
+    1,
   );
   const monthlySales = await Order.aggregate([
     {

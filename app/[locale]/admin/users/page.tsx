@@ -14,7 +14,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { deleteUser, getAllUsers, IUserDTO } from "@/lib/actions/user.actions";
-import { IUser } from "@/db/models/user.model";
 import { formatId } from "@/lib/utils";
 
 export const metadata: Metadata = {

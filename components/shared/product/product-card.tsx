@@ -26,7 +26,7 @@ const ProductCard = ({
   hideBorder?: boolean;
   hideAddToCart?: boolean;
 }) => {
-  const ProductImage = () => (
+  const productImage = (
     <Link href={`/product/${product.slug}`}>
       <div className="relative h-52">
         {product.images.length > 1 ? (
@@ -49,7 +49,7 @@ const ProductCard = ({
       </div>
     </Link>
   );
-  const ProductDetails = () => (
+  const productDetails = (
     <div className="flex-1 space-y-2">
       <p className="font-bold">{product.brand}</p>
       <Link
@@ -76,7 +76,7 @@ const ProductCard = ({
       />
     </div>
   );
-  const AddButton = () => (
+  const addButton = (
     <div className="w-full text-center">
       <AddToCart
         minimal
@@ -99,28 +99,24 @@ const ProductCard = ({
 
   return hideBorder ? (
     <div className="flex flex-col">
-      <ProductImage />
+      {productImage}
       {!hideDetails && (
         <>
-          <div className="p-3 flex-1 text-center">
-            <ProductDetails />
-          </div>
-          {!hideAddToCart && <AddButton />}
+          <div className="p-3 flex-1 text-center">{productDetails}</div>
+          {!hideAddToCart && addButton}
         </>
       )}
     </div>
   ) : (
     <Card className="flex flex-col  ">
-      <CardHeader className="p-3">
-        <ProductImage />
-      </CardHeader>
+      <CardHeader className="p-3">{productImage}</CardHeader>
       {!hideDetails && (
         <>
           <CardContent className="p-3 flex-1  text-center">
-            <ProductDetails />
+            {productDetails}
           </CardContent>
           <CardFooter className="p-3">
-            {!hideAddToCart && <AddButton />}
+            {!hideAddToCart && addButton}
           </CardFooter>
         </>
       )}

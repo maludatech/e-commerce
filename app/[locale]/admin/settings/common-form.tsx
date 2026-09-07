@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -17,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { COLORS, THEMES } from "@/lib/constants";
-import { ISettingInput, SettingFormInput, SettingFormOutput } from "@/types";
+import { SettingFormInput, SettingFormOutput } from "@/types";
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
 
@@ -25,7 +24,7 @@ export default function CommonForm({
   form,
   id,
 }: {
-  form: UseFormReturn<SettingFormInput, any, SettingFormOutput>;
+  form: UseFormReturn<SettingFormInput, unknown, SettingFormOutput>;
   id: string;
 }) {
   const { control } = form;

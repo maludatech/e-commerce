@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import { UploadButton } from "@/lib/uploadthing";
-import { ISettingInput, SettingFormInput, SettingFormOutput } from "@/types";
+import { SettingFormInput, SettingFormOutput } from "@/types";
 import { TrashIcon } from "lucide-react";
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
@@ -21,7 +21,7 @@ export default function SiteInfoForm({
   form,
   id,
 }: {
-  form: UseFormReturn<SettingFormInput, any, SettingFormOutput>;
+  form: UseFormReturn<SettingFormInput, unknown, SettingFormOutput>;
   id: string;
 }) {
   const { watch, control } = form;

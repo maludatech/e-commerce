@@ -52,7 +52,7 @@ const users: IUserInput[] = [
       country: "USA",
       phone: "123-456-7890",
     },
-    paymentMethod: "PayPal",
+    paymentMethod: "Stripe",
     emailVerified: false,
   },
   {
@@ -86,7 +86,7 @@ const users: IUserInput[] = [
       country: "USA",
       phone: "123-456-7890",
     },
-    paymentMethod: "PayPal",
+    paymentMethod: "Stripe",
     emailVerified: false,
   },
   {
@@ -154,7 +154,7 @@ const users: IUserInput[] = [
       country: "USA",
       phone: "123-456-7890",
     },
-    paymentMethod: "PayPal",
+    paymentMethod: "Stripe",
     emailVerified: false,
   },
   {
@@ -205,7 +205,7 @@ const users: IUserInput[] = [
       country: "USA",
       phone: "123-456-7890",
     },
-    paymentMethod: "PayPal",
+    paymentMethod: "Stripe",
     emailVerified: false,
   },
   {
@@ -256,7 +256,7 @@ const users: IUserInput[] = [
       country: "USA",
       phone: "123-456-7890",
     },
-    paymentMethod: "PayPal",
+    paymentMethod: "Stripe",
     emailVerified: false,
   },
 ];
@@ -355,7 +355,7 @@ const products: IProductInput[] = [
   {
     name: "Decrum Mens Plain Long Sleeve T-Shirt - Comfortable Soft Fashion V Neck Full Sleeves Jersey Shirts",
     slug: toSlug(
-      "Decrum Mens Plain Long Sleeve T-Shirt - Comfortable Soft Fashion V Neck Full Sleeves Jersey Shirts"
+      "Decrum Mens Plain Long Sleeve T-Shirt - Comfortable Soft Fashion V Neck Full Sleeves Jersey Shirts",
     ),
     category: "T-Shirts",
     brand: "Jerzees",
@@ -385,7 +385,7 @@ const products: IProductInput[] = [
   {
     name: "Muscle Cmdr Men's Slim Fit Henley Shirt Long&Short Business Sleeve Casual 3 Metal Buton Placket Casual Stylish T-Shirt",
     slug: toSlug(
-      "Muscle Cmdr Men's Slim Fit Henley Shirt Long&Short Business Sleeve Casual 3 Metal Buton Placket Casual Stylish T-Shirt"
+      "Muscle Cmdr Men's Slim Fit Henley Shirt Long&Short Business Sleeve Casual 3 Metal Buton Placket Casual Stylish T-Shirt",
     ),
     category: "T-Shirts",
     brand: " Muscle Cmdr",
@@ -472,7 +472,7 @@ const products: IProductInput[] = [
   {
     name: "Levi's mens 505 Regular Fit Jeans (Also Available in Big & Tall)",
     slug: toSlug(
-      "Levi's mens 505 Regular Fit Jeans (Also Available in Big & Tall)"
+      "Levi's mens 505 Regular Fit Jeans (Also Available in Big & Tall)",
     ),
     category: "Jeans",
     brand: "Levi's",
@@ -530,7 +530,7 @@ const products: IProductInput[] = [
   {
     name: "Buffalo David Bitton Mens Men's Driven Relaxed Denim JeansJeans",
     slug: toSlug(
-      "Buffalo David Bitton Mens Men's Driven Relaxed Denim JeansJeans"
+      "Buffalo David Bitton Mens Men's Driven Relaxed Denim JeansJeans",
     ),
     category: "Jeans",
     brand: "Buffalo David Bitton",
@@ -645,7 +645,7 @@ const products: IProductInput[] = [
   {
     name: "SEIKO 5 Sport SRPJ83 Beige Dial Nylon Automatic Watch, Beige, Automatic Watch",
     slug: toSlug(
-      "SEIKO 5 Sport SRPJ83 Beige Dial Nylon Automatic Watch, Beige, Automatic Watch"
+      "SEIKO 5 Sport SRPJ83 Beige Dial Nylon Automatic Watch, Beige, Automatic Watch",
     ),
     category: "Wrist Watches",
     brand: "Seiko",
@@ -675,7 +675,7 @@ const products: IProductInput[] = [
   {
     name: "Casio Men's Heavy Duty Analog Quartz Stainless Steel Strap, Silver, 42 Casual Watch ",
     slug: toSlug(
-      "Casio Men's Heavy Duty Analog Quartz Stainless Steel Strap, Silver, 42 Casual Watch"
+      "Casio Men's Heavy Duty Analog Quartz Stainless Steel Strap, Silver, 42 Casual Watch",
     ),
     category: "Wrist Watches",
     brand: "Casio",
@@ -705,7 +705,7 @@ const products: IProductInput[] = [
   {
     name: "Casio Classic Silver-Tone Stainless Steel Band Date Indicator Watch",
     slug: toSlug(
-      "Casio Classic Silver-Tone Stainless Steel Band Date Indicator Watch"
+      "Casio Classic Silver-Tone Stainless Steel Band Date Indicator Watch",
     ),
     category: "Wrist Watches",
     brand: "Casio",
@@ -820,7 +820,7 @@ const products: IProductInput[] = [
   {
     name: "ziitop Men's Running Walking Shoes Fashion Sneakers Mesh Dress Shoes Business Oxfords Shoes Lightweight Casual Breathable Work Formal Shoes",
     slug: toSlug(
-      "ziitop Men's Running Walking Shoes Fashion Sneakers Mesh Dress Shoes Business Oxfords Shoes Lightweight Casual Breathable Work Formal Shoes"
+      "ziitop Men's Running Walking Shoes Fashion Sneakers Mesh Dress Shoes Business Oxfords Shoes Lightweight Casual Breathable Work Formal Shoes",
     ),
     category: "Shoes",
     brand: "ziitop",
@@ -850,7 +850,7 @@ const products: IProductInput[] = [
   {
     name: "Skechers mens Summits High Range Hands Free Slip-in Shoes Work shoe",
     slug: toSlug(
-      "Skechers mens Summits High Range Hands Free Slip-in Shoes Work shoe"
+      "Skechers mens Summits High Range Hands Free Slip-in Shoes Work shoe",
     ),
     category: "Shoes",
     brand: "Skechers",
@@ -880,7 +880,7 @@ const products: IProductInput[] = [
   {
     name: "DLWKIPV Mens Running Shoes Tennis Cross Training Sneakers Fashion Non Slip Outdoor Walking Jogging Shoes Mesh Light Flexible Comfortable Breathable Shoes",
     slug: toSlug(
-      "DLWKIPV Mens Running Shoes Tennis Cross Training Sneakers Fashion Non Slip Outdoor Walking Jogging Shoes Mesh Light Flexible Comfortable Breathable Shoes"
+      "DLWKIPV Mens Running Shoes Tennis Cross Training Sneakers Fashion Non Slip Outdoor Walking Jogging Shoes Mesh Light Flexible Comfortable Breathable Shoes",
     ),
     category: "Shoes",
     brand: "DLWKIPV",
@@ -938,7 +938,7 @@ const products: IProductInput[] = [
   {
     name: "Mens Wearbreeze Shoes, Urban - Ultra Comfortable Shoes, Breeze Shoes for Men, Men's Mesh Dress Sneakers Business Shoes",
     slug: toSlug(
-      "Mens Wearbreeze Shoes, Urban - Ultra Comfortable Shoes, Breeze Shoes for Men, Men's Mesh Dress Sneakers Business Shoes"
+      "Mens Wearbreeze Shoes, Urban - Ultra Comfortable Shoes, Breeze Shoes for Men, Men's Mesh Dress Sneakers Business Shoes",
     ),
     category: "Shoes",
     brand: "Generic",
@@ -1251,18 +1251,19 @@ We also provide helpful resources such as order tracking, product guides, and FA
         pageSize: 9,
       },
       site: {
-        name: "NxtAmzn",
+        name: "Steeze-boutique",
         description:
-          "NxtAmzn is a sample Ecommerce website built with Next.js, Tailwind CSS, and MongoDB.",
-        keywords: "Next Ecommerce, Next.js, Tailwind CSS, MongoDB",
-        url: "https://next-mongo-ecommerce-final.vercel.app",
-        logo: "/icons/logo.svg",
+          "Your favorite boutique for male and female wears & accessories, and MongoDB.",
+        keywords:
+          "Steeze Boutique, Fashion, Clothing, Ecommerce, Next.js, MongoDB",
+        url: "https://steeze-boutique.vercel.app",
+        logo: "/assets/icons/logo.svg",
         slogan: "Spend less, enjoy more.",
-        author: "Next Ecommerce",
-        copyright: "2000-2024, Next-Ecommerce.com, Inc. or its affiliates",
+        author: "Mr.Maludatech",
+        copyright: "2000-2025, steeze-boutique Inc. or its affiliates",
         email: "admin@example.com",
-        address: "123, Main Street, Anytown, CA, Zip 12345",
-        phone: "+1 (123) 456-7890",
+        address: "Enugu, Enugu state, Nigeria",
+        phone: "+2348163887385",
       },
       carousels: [
         {
@@ -1296,16 +1297,15 @@ We also provide helpful resources such as order tracking, product guides, and FA
           symbol: "$",
           convertRate: 1,
         },
-        { name: "Euro", code: "EUR", symbol: "€", convertRate: 0.96 },
-        { name: "UAE Dirham", code: "AED", symbol: "AED", convertRate: 3.67 },
+        { name: "Euro", code: "EUR", symbol: "€", convertRate: 0.86 },
+        { name: "UAE Dirham", code: "AED", symbol: "AED", convertRate: 3.6725 },
       ],
       defaultCurrency: "USD",
       availablePaymentMethods: [
-        { name: "PayPal", commission: 0 },
         { name: "Stripe", commission: 0 },
         { name: "Cash On Delivery", commission: 0 },
       ],
-      defaultPaymentMethod: "PayPal",
+      defaultPaymentMethod: "Stripe",
       availableDeliveryDates: [
         {
           name: "Tomorrow",

@@ -17,7 +17,6 @@ import {
 import { formatCurrency } from "@/lib/utils";
 import { IOrder } from "@/db/models/order.model";
 import { getSetting } from "@/lib/actions/setting.actions";
-import { Types } from "mongoose";
 
 type OrderInformationProps = {
   order: IOrder;

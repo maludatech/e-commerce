@@ -8,8 +8,8 @@ import { persist } from "zustand/middleware";
 type ColorState = {
   availableColors: {
     name: string;
-    root: {};
-    dark: {};
+    root: Record<string, string>;
+    dark: Record<string, string>;
   }[];
   defaultColor: string;
   userColor?: string;

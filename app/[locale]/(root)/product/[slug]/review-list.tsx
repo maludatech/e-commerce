@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Calendar, Check, StarIcon, User } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useInView } from "react-intersection-observer";
 import { z } from "zod";
 import { useTranslations } from "next-intl";
@@ -121,7 +121,7 @@ export default function ReviewList({
   type CustomerReviewInput = z.input<typeof ReviewInputSchema>;
   type CustomerReviewOutput = z.output<typeof ReviewInputSchema>;
 
-  const form = useForm<CustomerReviewInput, any, CustomerReviewOutput>({
+  const form = useForm<CustomerReviewInput, unknown, CustomerReviewOutput>({
     resolver: zodResolver(ReviewInputSchema),
     defaultValues: reviewFormDefaultValues as CustomerReviewInput,
   });

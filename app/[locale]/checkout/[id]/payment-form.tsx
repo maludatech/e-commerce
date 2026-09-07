@@ -1,7 +1,6 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
 import { IOrder } from "@/db/models/order.model";
 import { formatDateTime } from "@/lib/utils";
 
@@ -36,13 +35,11 @@ export default function OrderDetailsForm({
     expectedDeliveryDate,
     isPaid,
   } = order;
-  const { toast } = useToast();
-
   if (isPaid) {
     redirect(`/account/orders/${order._id}`);
   }
 
-  const CheckoutSummary = () => (
+  const checkoutSummary = (
     <Card>
       <CardContent className="p-4">
         <div>
@@ -162,13 +159,13 @@ export default function OrderDetailsForm({
             </div>
           </div>
           <div className="block md:hidden">
-            <CheckoutSummary />
+            {checkoutSummary}
           </div>
 
           <CheckoutFooter />
         </div>
         <div className="hidden md:block">
-          <CheckoutSummary />
+          {checkoutSummary}
         </div>
       </div>
     </main>

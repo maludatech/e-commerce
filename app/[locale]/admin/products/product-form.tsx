@@ -22,7 +22,7 @@ import { useToast } from "@/hooks/use-toast";
 import { createProduct, updateProduct } from "@/lib/actions/product.actions";
 import { IProduct } from "@/db/models/product.model";
 import { UploadButton } from "@/lib/uploadthing";
-import { ProductInputSchema, ProductUpdateSchema } from "@/lib/validator";
+import { ProductInputSchema } from "@/lib/validator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toSlug } from "@/lib/utils";
 import { IProductInput } from "@/types";
@@ -98,7 +98,7 @@ const ProductForm = ({
   type ProductFormInput = z.input<typeof ProductInputSchema>;
   type ProductFormOutput = z.output<typeof ProductInputSchema>;
 
-  const form = useForm<ProductFormInput, any, ProductFormOutput>({
+  const form = useForm<ProductFormInput, unknown, ProductFormOutput>({
     resolver: zodResolver(ProductInputSchema),
     defaultValues:
       product && type === "Update"
@@ -141,7 +141,6 @@ const ProductForm = ({
 
   const images = form.watch("images");
 
-  console.log(form.formState.errors);
   return (
     <Form {...form}>
       <form

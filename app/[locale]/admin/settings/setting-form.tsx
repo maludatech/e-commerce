@@ -1,6 +1,5 @@
 "use client";
 
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -61,14 +60,13 @@ function mapSettingToFormInput(setting: SettingFormOutput): SettingFormInput {
 const SettingForm = ({ setting }: { setting: ISettingInput }) => {
   const { setSetting } = useSetting();
 
-  const form = useForm<SettingFormInput, any, SettingFormOutput>({
+  const form = useForm<SettingFormInput, unknown, SettingFormOutput>({
     resolver: zodResolver(SettingInputSchema),
     defaultValues: mapSettingToFormInput(setting),
   });
 
   const {
     formState: { isSubmitting },
-    handleSubmit,
   } = form;
 
   const { toast } = useToast();

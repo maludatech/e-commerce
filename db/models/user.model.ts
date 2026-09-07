@@ -1,5 +1,6 @@
 import { IUserInput } from "@/types";
-import { Document, Model, model, models, Schema, Types } from "mongoose";
+import mongoose, { Document, Model, Schema, Types } from "mongoose";
+const { model, models } = mongoose;
 
 export interface IUser extends Document, IUserInput {
   _id: Types.ObjectId;

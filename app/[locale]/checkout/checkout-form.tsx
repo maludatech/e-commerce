@@ -154,7 +154,7 @@ const CheckoutForm = () => {
   const handleSelectShippingAddress = () => {
     shippingAddressForm.handleSubmit(onSubmitShippingAddress)();
   };
-  const CheckoutSummary = () => (
+  const checkoutSummary = (
     <Card>
       <CardContent className="p-4">
         {!isAddressSelected && (
@@ -679,7 +679,7 @@ const CheckoutForm = () => {
           {isPaymentMethodSelected && isAddressSelected && (
             <div className="mt-6">
               <div className="block md:hidden">
-                <CheckoutSummary />
+                {checkoutSummary}
               </div>
 
               <Card className="hidden md:block ">
@@ -712,7 +712,7 @@ const CheckoutForm = () => {
           <CheckoutFooter />
         </div>
         <div className="hidden md:block">
-          <CheckoutSummary />
+          {checkoutSummary}
         </div>
       </div>
     </main>

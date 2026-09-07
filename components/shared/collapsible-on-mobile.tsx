@@ -23,6 +23,7 @@ export default function CollapsibleOnMobile({
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- resets open state to match device/route
     if (deviceType === "mobile") setOpen(false);
     else if (deviceType === "desktop") setOpen(true);
   }, [deviceType, searchParams]);

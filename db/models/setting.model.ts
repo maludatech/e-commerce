@@ -1,5 +1,6 @@
 import { ISettingInput } from "@/types";
-import { Document, Model, model, models, Schema, Types } from "mongoose";
+import mongoose, { Document, Model, Schema, Types } from "mongoose";
+const { model, models } = mongoose;
 
 export interface ISetting extends Document, ISettingInput {
   _id: Types.ObjectId;

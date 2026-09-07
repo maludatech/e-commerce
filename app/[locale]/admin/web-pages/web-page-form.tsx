@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import MDEditor from "@uiw/react-md-editor";
-import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -21,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { createWebPage, updateWebPage } from "@/lib/actions/web-page.actions";
 import { IWebPage } from "@/db/models/web-page.model";
-import { WebPageInputSchema, WebPageUpdateSchema } from "@/lib/validator";
+import { WebPageInputSchema } from "@/lib/validator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toSlug } from "@/lib/utils";
 

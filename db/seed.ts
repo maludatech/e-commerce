@@ -1,10 +1,12 @@
+import { Types } from "mongoose";
 import data from "@/lib/data";
 import { connectToDb } from "@/utils/database";
 import User from "./models/user.model";
 import Product from "./models/product.model";
 import Review from "./models/review.model";
 import { cwd } from "process";
-import { loadEnvConfig } from "@next/env";
+import nextEnv from "@next/env";
+const { loadEnvConfig } = nextEnv;
 import Order from "./models/order.model";
 import {
   calculateFutureDate,
@@ -89,8 +91,8 @@ const main = async () => {
 
 const generateOrder = async (
   i: number,
-  users: any,
-  products: any,
+  users: Types.ObjectId[],
+  products: Types.ObjectId[],
 ): Promise<IOrderInput> => {
   const product1 = await Product.findById(products[i % products.length]);
 
@@ -148,7 +150,7 @@ const generateOrder = async (
   ];
 
   const order = {
-    user: users[i % users.length],
+    user: users[i % users.length].toString(),
     items: items.map((item) => ({
       ...item,
       product: item.product,

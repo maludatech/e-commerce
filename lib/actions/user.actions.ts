@@ -5,7 +5,7 @@ import { auth, signIn, signOut } from "@/auth";
 import { IUserName, IUserSignIn, IUserSignUp } from "@/types";
 import { UserSignUpSchema, UserUpdateSchema } from "../validator";
 import { connectToDb } from "@/utils/database";
-import User, { IUser } from "@/db/models/user.model";
+import User from "@/db/models/user.model";
 import { formatError } from "../utils";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";

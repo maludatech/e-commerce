@@ -1,5 +1,4 @@
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
-import Google from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDb } from "./utils/database";
@@ -68,7 +67,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           await connectToDb();
           await User.findByIdAndUpdate(user.id, {
             name: user.name || user.email!.split("@")[0],
-            role: "user",
+            role: "User",
           });
         }
         token.name = user.name || user.email!.split("@")[0];

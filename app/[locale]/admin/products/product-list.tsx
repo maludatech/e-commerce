@@ -17,7 +17,7 @@ import {
 } from "@/lib/actions/product.actions";
 import { IProduct } from "@/db/models/product.model";
 
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 import { Input } from "@/components/ui/input";
 import { formatDateTime, formatId } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -34,6 +34,7 @@ const ProductList = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const [data, setData] = useState<ProductListDataProps>();
   const [isPending, startTransition] = useTransition();
+  const debounceTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const handlePageChange = (changeType: "next" | "prev") => {
     const newPage = changeType === "next" ? page + 1 : page - 1;
@@ -55,8 +56,8 @@ const ProductList = () => {
     const value = e.target.value;
     setInputValue(value);
     if (value) {
-      clearTimeout((window as any).debounce);
-      (window as any).debounce = setTimeout(() => {
+      clearTimeout(debounceTimeout.current);
+      debounceTimeout.current = setTimeout(() => {
         startTransition(async () => {
           const data = await getAllProductsForAdmin({ query: value, page: 1 });
           setData(data);

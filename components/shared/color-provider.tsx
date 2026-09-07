@@ -13,6 +13,9 @@ export function ColorProvider({
 
   React.useEffect(() => {
     updateCssVariables();
+    // updateCssVariables is a new function identity every render (not
+    // memoized by useColorStore); it always reflects the current theme/color
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme, color]);
 
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>;

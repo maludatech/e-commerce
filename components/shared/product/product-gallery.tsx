@@ -18,10 +18,10 @@ export default function ProductGallery({ images }: { images: string[] }) {
             onMouseOver={() => {
               setSelectedImage(index);
             }}
-            className={`bg-white rounded-lg overflow-hidden ${
+            className={`bg-card rounded-lg overflow-hidden ${
               selectedImage === index
                 ? "ring-2 ring-blue-500"
-                : "ring-1 ring-gray-300"
+                : "ring-1 ring-border"
             }`}
           >
             <Image src={image} alt={"product image"} width={48} height={48} />

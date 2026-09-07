@@ -15,16 +15,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ISettingInput, SettingFormInput, SettingFormOutput } from "@/types";
+import { SettingFormInput, SettingFormOutput } from "@/types";
 import { TrashIcon } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useFieldArray, UseFormReturn } from "react-hook-form";
+import { getLiveCurrencyRates } from "@/lib/actions/currency.actions";
+import { useToast } from "@/hooks/use-toast";
 
 export default function CurrencyForm({
   form,
   id,
 }: {
-  form: UseFormReturn<SettingFormInput, any, SettingFormOutput>;
+  form: UseFormReturn<SettingFormInput, unknown, SettingFormOutput>;
   id: string;
 }) {
   const { fields, append, remove } = useFieldArray({
@@ -37,9 +39,43 @@ export default function CurrencyForm({
     control,
     formState: { errors },
   } = form;
+  const { toast } = useToast();
+  const [isFetchingRates, setIsFetchingRates] = useState(false);
 
   const availableCurrencies = watch("availableCurrencies");
   const defaultCurrency = watch("defaultCurrency");
+
+  const handleRefreshRates = async () => {
+    const base = defaultCurrency || availableCurrencies[0]?.code;
+    if (!base) return;
+    setIsFetchingRates(true);
+    const targetCodes = availableCurrencies
+      .map((c) => c.code)
+      .filter((code): code is string => !!code && code !== base);
+    const result = await getLiveCurrencyRates(base, targetCodes);
+    setIsFetchingRates(false);
+
+    if (!result.success || !result.rates) {
+      toast({
+        variant: "destructive",
+        description: result.message || "Failed to fetch live exchange rates",
+      });
+      return;
+    }
+
+    availableCurrencies.forEach((currency, index) => {
+      if (currency.code === base) {
+        setValue(`availableCurrencies.${index}.convertRate`, "1.0000");
+      } else if (result.rates![currency.code] != null) {
+        setValue(
+          `availableCurrencies.${index}.convertRate`,
+          result.rates![currency.code].toFixed(4)
+        );
+      }
+    });
+
+    toast({ description: "Exchange rates updated. Review and save to apply." });
+  };
 
   useEffect(() => {
     const validCodes = availableCurrencies.map((lang) => lang.code);
@@ -51,8 +87,17 @@ export default function CurrencyForm({
 
   return (
     <Card id={id}>
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Currencies</CardTitle>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          disabled={isFetchingRates}
+          onClick={handleRefreshRates}
+        >
+          {isFetchingRates ? "Fetching rates..." : "Refresh Live Rates"}
+        </Button>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-4">

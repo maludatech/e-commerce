@@ -63,4 +63,4 @@ export const SENDER_NAME = process.env.SENDER_NAME || APP_NAME;
 
 export const USER_ROLES = ["Admin", "User"];
 export const COLORS = ["Gold", "Green", "Red"];
-export const THEMES = ["Light", "Dark", "System"];
+export const THEMES = ["Light"];

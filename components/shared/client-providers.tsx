@@ -18,11 +18,7 @@ export default function ClientProviders({
 
   return (
     <AppInitializer setting={setting}>
-      <ThemeProvider
-        attribute="class"
-        // defaultTheme={setting.common.defaultTheme.toLocaleLowerCase()}
-        defaultTheme="system"
-      >
+      <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light">
         {visible ? (
           <div className="flex min-h-screen">
             <div className="flex-1 overflow-hidden">{children}</div>

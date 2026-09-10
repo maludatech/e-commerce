@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/sheet";
 import CartButton from "./cart-button";
 import UserButton from "./user-button";
-import ThemeSwitcher from "./theme-switcher";
+import ColorSwitcher from "./color-switcher";
 import LanguageSwitcher from "./language-switcher";
 import { useTranslations } from "next-intl";
 
@@ -19,7 +19,7 @@ const Menu = ({ forAdmin = false }: { forAdmin?: boolean }) => {
     <div className="flex justify-end">
       <nav className="md:flex gap-3 hidden w-full">
         <LanguageSwitcher />
-        <ThemeSwitcher />
+        <ColorSwitcher />
         <UserButton />
         {forAdmin ? null : <CartButton />}
       </nav>
@@ -36,7 +36,7 @@ const Menu = ({ forAdmin = false }: { forAdmin?: boolean }) => {
               </div>
             </SheetHeader>
             <LanguageSwitcher />
-            <ThemeSwitcher />
+            <ColorSwitcher />
             <UserButton />
             <CartButton />
           </SheetContent>

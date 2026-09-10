@@ -1261,7 +1261,7 @@ We also provide helpful resources such as order tracking, product guides, and FA
         slogan: "Spend less, enjoy more.",
         author: "Mr.Maludatech",
         copyright: "2000-2025, steeze-boutique Inc. or its affiliates",
-        email: "admin@example.com",
+        email: "maludatech@gmail.com",
         address: "Enugu, Enugu state, Nigeria",
         phone: "+2348163887385",
       },

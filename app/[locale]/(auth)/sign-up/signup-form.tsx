@@ -94,7 +94,7 @@ export default function CredentialsSignInForm() {
               <FormItem className="w-full">
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter name address" {...field} />
+                  <Input placeholder="Enter your name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -2,6 +2,7 @@
 import { ChevronUp } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import * as FlagIcons from "country-flag-icons/react/3x2";
 
 import { Button } from "@/components/ui/button";
 import useSettingStore from "@/hooks/use-setting-store";
@@ -114,17 +115,21 @@ export default function Footer() {
                   <SelectValue placeholder={t("Footer.Select a language")} />
                 </SelectTrigger>
                 <SelectContent>
-                  {locales.map((lang, index) => (
-                    <SelectItem key={index} value={lang.code}>
-                      <Link
-                        className="w-full flex items-center gap-1"
-                        href={pathname}
-                        locale={lang.code}
-                      >
-                        <span className="text-lg">{lang.icon}</span> {lang.name}
-                      </Link>
-                    </SelectItem>
-                  ))}
+                  {locales.map((lang, index) => {
+                    const Flag = FlagIcons[lang.icon as keyof typeof FlagIcons];
+                    return (
+                      <SelectItem key={index} value={lang.code}>
+                        <Link
+                          className="w-full flex items-center gap-2"
+                          href={pathname}
+                          locale={lang.code}
+                        >
+                          {Flag && <Flag className="w-5 rounded-xs" />}{" "}
+                          {lang.name}
+                        </Link>
+                      </SelectItem>
+                    );
+                  })}
                 </SelectContent>
               </Select>
               <Select

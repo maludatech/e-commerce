@@ -26,6 +26,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { getSetting } from "./setting.actions";
 import { sendResetPasswordEmail } from "@/emails";
+import { isRateLimited } from "@/lib/rate-limit";
 
 export interface IUserDTO {
   _id: string;
@@ -171,6 +172,10 @@ export async function requestPasswordReset(data: IForgotPassword) {
   };
   try {
     const { email } = await ForgotPasswordSchema.parseAsync(data);
+    // Keyed by email (not IP) so an attacker can't spam one victim's inbox
+    // by rotating IPs.
+    if (await isRateLimited("forgot-password", email)) return genericResponse;
+
     await connectToDb();
     const user = await User.findOne({ email });
     if (!user || !user.password) return genericResponse;
@@ -198,6 +203,13 @@ export async function requestPasswordReset(data: IForgotPassword) {
 
 export async function resetPassword(token: string, data: IResetPassword) {
   try {
+    if (await isRateLimited("reset-password")) {
+      return {
+        success: false,
+        message: "Too many attempts. Please try again later.",
+      };
+    }
+
     const { password } = await ResetPasswordSchema.parseAsync(data);
     await connectToDb();
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
@@ -241,6 +253,13 @@ export async function changePassword(data: IChangePassword) {
       await ChangePasswordSchema.parseAsync(data);
     const session = await auth();
     if (!session?.user?.id) throw new Error("Not authenticated");
+
+    if (await isRateLimited("change-password", session.user.id)) {
+      return {
+        success: false,
+        message: "Too many attempts. Please try again later.",
+      };
+    }
 
     await connectToDb();
     const user = await User.findById(session.user.id);

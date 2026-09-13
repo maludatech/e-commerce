@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDb } from "./utils/database";
 import client from "./db/client";
 import User from "./db/models/user.model";
+import { isRateLimited } from "./lib/rate-limit";
 
 import NextAuth, { type DefaultSession } from "next-auth";
 import authConfig from "./auth.config";
@@ -37,9 +38,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { type: "password" },
       },
       async authorize(credentials) {
-        await connectToDb();
         if (credentials == null) return null;
 
+        // Keyed by email (not IP) so brute-forcing one account can't be
+        // spread across rotating IPs to dodge the limit.
+        if (await isRateLimited("sign-in", credentials.email as string)) {
+          return null;
+        }
+
+        await connectToDb();
         const user = await User.findOne({ email: credentials.email as string });
 
         if (user && user.password) {

@@ -23,6 +23,12 @@ export async function POST(req: NextRequest) {
     if (order == null) {
       return new NextResponse("Bad Request", { status: 400 });
     }
+    // Stripe can and does redeliver the same event; without this guard a
+    // duplicate delivery would decrement stock and count a sale twice for
+    // the same order.
+    if (order.isPaid) {
+      return NextResponse.json({ message: "Order already paid" });
+    }
 
     order.isPaid = true;
     order.paidAt = new Date();

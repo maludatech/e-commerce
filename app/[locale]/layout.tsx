@@ -9,6 +9,7 @@ import { notFound } from "next/navigation";
 import { getSetting } from "@/lib/actions/setting.actions";
 import { cookies } from "next/headers";
 import { auth } from "@/auth";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -101,6 +102,7 @@ export default async function AppLayout({
             {children}
           </ClientProviders>
         </NextIntlClientProvider>
+        <Analytics />
       </body>
     </html>
   );

@@ -38,6 +38,22 @@ export const createOrderFromCart = async (
   clientSideCart: Cart,
   userId: string,
 ) => {
+  await connectToDb();
+  // The client-side cart's countInStock is only as fresh as the last time
+  // the shopper loaded the page; re-check against the DB here so two
+  // shoppers can't both check out the last unit of a product.
+  const products = await Product.find({
+    _id: { $in: clientSideCart.items.map((item) => item.product) },
+  });
+  for (const item of clientSideCart.items) {
+    const product = products.find((p) => p._id.toString() === item.product);
+    if (!product || product.countInStock < item.quantity) {
+      throw new Error(
+        `Sorry, ${item.name} no longer has enough stock. Please update your cart.`,
+      );
+    }
+  }
+
   const cart = {
     ...clientSideCart,
     ...calculateDeliveryDateAndPrice({

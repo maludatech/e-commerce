@@ -80,7 +80,12 @@ export default function DeliveryDateForm({
                   <FormItem>
                     {index == 0 && <FormLabel>Days</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder="daysToDeliver" />
+                      <Input
+                        type="text"
+                        placeholder="daysToDeliver"
+                        {...field}
+                        value={(field.value as string | undefined) ?? ""}
+                      />
                     </FormControl>
                     <FormMessage>
                       {

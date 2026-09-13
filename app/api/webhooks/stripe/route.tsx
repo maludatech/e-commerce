@@ -3,6 +3,7 @@ import Stripe from "stripe";
 
 import { sendPurchaseReceipt } from "@/emails";
 import Order from "@/db/models/order.model";
+import { fulfillOrderPayment } from "@/lib/actions/order.actions";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
@@ -32,6 +33,9 @@ export async function POST(req: NextRequest) {
       pricePaid: (pricePaidInCents / 100).toFixed(2),
     };
     await order.save();
+    if (!process.env.MONGODB_URI?.startsWith("mongodb://localhost")) {
+      await fulfillOrderPayment(order._id.toString());
+    }
     try {
       await sendPurchaseReceipt({ order });
     } catch (err) {

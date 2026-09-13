@@ -20,7 +20,7 @@ import { TrashIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useFieldArray, UseFormReturn } from "react-hook-form";
 import { getLiveCurrencyRates } from "@/lib/actions/currency.actions";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 export default function CurrencyForm({
   form,
@@ -39,7 +39,6 @@ export default function CurrencyForm({
     control,
     formState: { errors },
   } = form;
-  const { toast } = useToast();
   const [isFetchingRates, setIsFetchingRates] = useState(false);
 
   const availableCurrencies = watch("availableCurrencies");
@@ -56,10 +55,7 @@ export default function CurrencyForm({
     setIsFetchingRates(false);
 
     if (!result.success || !result.rates) {
-      toast({
-        variant: "destructive",
-        description: result.message || "Failed to fetch live exchange rates",
-      });
+      toast.error(result.message || "Failed to fetch live exchange rates");
       return;
     }
 
@@ -74,7 +70,7 @@ export default function CurrencyForm({
       }
     });
 
-    toast({ description: "Exchange rates updated. Review and save to apply." });
+    toast("Exchange rates updated. Review and save to apply.");
   };
 
   useEffect(() => {

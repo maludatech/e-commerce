@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { SettingInputSchema } from "@/lib/validator";
 import {
   ClientSetting,
@@ -14,7 +14,6 @@ import {
 } from "@/types";
 import { updateSetting } from "@/lib/actions/setting.actions";
 import useSetting from "@/hooks/use-setting-store";
-import LanguageForm from "./language-form";
 import CurrencyForm from "./currency-form";
 import PaymentMethodForm from "./payment-method-form";
 import DeliveryDateForm from "./delivery-date-form";
@@ -37,10 +36,6 @@ function mapSettingToFormInput(setting: SettingFormOutput): SettingFormInput {
     availableCurrencies: setting.availableCurrencies.map((c) => ({
       ...c,
       convertRate: c.convertRate != null ? c.convertRate.toFixed(4) : "1.0000",
-    })),
-    availablePaymentMethods: setting.availablePaymentMethods.map((p) => ({
-      ...p,
-      commission: p.commission != null ? p.commission.toFixed(2) : "0.00",
     })),
     availableDeliveryDates: setting.availableDeliveryDates.map((d) => ({
       ...d,
@@ -66,22 +61,19 @@ const SettingForm = ({ setting }: { setting: ISettingInput }) => {
   });
 
   const {
-    formState: { isSubmitting },
+    formState: { isSubmitting, isDirty },
   } = form;
 
-  const { toast } = useToast();
   async function onSubmit(values: SettingFormOutput) {
     const res = await updateSetting({ ...values });
     if (!res.success) {
-      toast({
-        variant: "destructive",
-        description: res.message,
-      });
+      toast.error(res.message);
     } else {
-      toast({
-        description: res.message,
-      });
+      toast(res.message);
       setSetting(values as ClientSetting);
+      // Reset the dirty-tracking baseline to what was just saved, so Save
+      // goes back to disabled until the admin makes another real change.
+      form.reset(mapSettingToFormInput(values));
     }
   }
 
@@ -96,8 +88,6 @@ const SettingForm = ({ setting }: { setting: ISettingInput }) => {
         <CommonForm id="setting-common" form={form} />
         <CarouselForm id="setting-carousels" form={form} />
 
-        <LanguageForm id="setting-languages" form={form} />
-
         <CurrencyForm id="setting-currencies" form={form} />
 
         <PaymentMethodForm id="setting-payment-methods" form={form} />
@@ -108,7 +98,7 @@ const SettingForm = ({ setting }: { setting: ISettingInput }) => {
           <Button
             type="submit"
             size="lg"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !isDirty}
             className="w-full mb-24"
           >
             {isSubmitting ? "Submitting..." : `Save Setting`}

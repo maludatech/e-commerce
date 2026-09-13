@@ -174,6 +174,16 @@
   "Loading": {
     "Loading": "Chargement..."
   },
+  "Error": {
+    "Error": "Erreur",
+    "Try again": "Réessayer",
+    "Back To Home": "Retour à l'accueil"
+  },
+  "NotFound": {
+    "Title": "Page introuvable",
+    "Description": "Désolé, nous n'avons pas trouvé la page que vous recherchez.",
+    "Back To Home": "Retour à l'accueil"
+  },
   "Admin": {
     "Deleted User": "Utilisateur supprimé",
     "Overview": "Aperçu",

@@ -7,6 +7,14 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Suppress native browser password-reveal/clear icons (Edge, and some
+   Chromium builds) so they don't visually double up with our own
+   PasswordInput eye toggle. */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
 @theme {
   /* Semantic colors – these generate bg-background, text-foreground, border-border, etc. */
   --color-background: hsl(var(--background));

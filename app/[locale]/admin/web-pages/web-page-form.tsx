@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { createWebPage, updateWebPage } from "@/lib/actions/web-page.actions";
 import { IWebPage } from "@/db/models/web-page.model";
 import { WebPageInputSchema } from "@/lib/validator";
@@ -54,19 +54,13 @@ const WebPageForm = ({
       webPage && type === "Update" ? webPage : webPageDefaultValues,
   });
 
-  const { toast } = useToast();
   async function onSubmit(values: z.infer<typeof WebPageInputSchema>) {
     if (type === "Create") {
       const res = await createWebPage(values);
       if (!res.success) {
-        toast({
-          variant: "destructive",
-          description: res.message,
-        });
+        toast.error(res.message);
       } else {
-        toast({
-          description: res.message,
-        });
+        toast(res.message);
         router.push(`/admin/web-pages`);
       }
     }
@@ -77,10 +71,7 @@ const WebPageForm = ({
       }
       const res = await updateWebPage({ ...values, _id: webPageId });
       if (!res.success) {
-        toast({
-          variant: "destructive",
-          description: res.message,
-        });
+        toast.error(res.message);
       } else {
         router.push(`/admin/web-pages`);
       }

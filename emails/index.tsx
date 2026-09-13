@@ -2,6 +2,7 @@ import { Resend } from "resend";
 import PurchaseReceiptEmail from "./purchase-receipt";
 import { IOrder } from "@/db/models/order.model";
 import AskReviewOrderItemsEmail from "./ask-review-order-items";
+import ResetPasswordEmail from "./reset-password";
 import { SENDER_EMAIL, SENDER_NAME } from "@/lib/constants";
 
 const resend = new Resend(process.env.RESEND_API_KEY as string);
@@ -26,5 +27,22 @@ export const sendAskReviewOrderItems = async ({ order }: { order: IOrder }) => {
     subject: "Review your order items",
     react: <AskReviewOrderItemsEmail order={order} />,
     scheduledAt: oneDayFromNow,
+  });
+};
+
+export const sendResetPasswordEmail = async ({
+  email,
+  name,
+  resetUrl,
+}: {
+  email: string;
+  name: string;
+  resetUrl: string;
+}) => {
+  await resend.emails.send({
+    from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
+    to: email,
+    subject: "Reset your password",
+    react: <ResetPasswordEmail name={name} resetUrl={resetUrl} />,
   });
 };

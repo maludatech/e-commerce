@@ -5,6 +5,11 @@ export default {
   providers: [],
   callbacks: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    session: async ({ session, token }: any) => {
+      session.user.role = token.role as string;
+      return session;
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     authorized({ request, auth }: any) {
       const protectedPaths = [
         /\/checkout(\/.*)?/,

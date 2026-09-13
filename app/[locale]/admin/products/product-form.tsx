@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { createProduct, updateProduct } from "@/lib/actions/product.actions";
 import { IProduct } from "@/db/models/product.model";
 import { UploadButton } from "@/lib/uploadthing";
@@ -106,19 +106,13 @@ const ProductForm = ({
         : productDefaultValues,
   });
 
-  const { toast } = useToast();
   async function onSubmit(values: ProductFormOutput) {
     if (type === "Create") {
       const res = await createProduct(values);
       if (!res.success) {
-        toast({
-          variant: "destructive",
-          description: res.message,
-        });
+        toast.error(res.message);
       } else {
-        toast({
-          description: res.message,
-        });
+        toast(res.message);
         router.push(`/admin/products`);
       }
     }
@@ -129,10 +123,7 @@ const ProductForm = ({
       }
       const res = await updateProduct({ ...values, _id: productId });
       if (!res.success) {
-        toast({
-          variant: "destructive",
-          description: res.message,
-        });
+        toast.error(res.message);
       } else {
         router.push(`/admin/products`);
       }
@@ -325,10 +316,7 @@ const ProductForm = ({
                             form.setValue("images", [...images, res[0].url]);
                           }}
                           onUploadError={(error: Error) => {
-                            toast({
-                              variant: "destructive",
-                              description: `ERROR! ${error.message}`,
-                            });
+                            toast.error(`ERROR! ${error.message}`);
                           }}
                         />
                       </FormControl>

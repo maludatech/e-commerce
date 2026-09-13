@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { updateUserName } from "@/lib/actions/user.actions";
 import { UserNameSchema } from "@/lib/validator";
 
@@ -29,15 +29,10 @@ export const ProfileForm = () => {
       name: session?.user?.name ?? "",
     },
   });
-  const { toast } = useToast();
 
   async function onSubmit(values: z.infer<typeof UserNameSchema>) {
     const res = await updateUserName(values);
-    if (!res.success)
-      return toast({
-        variant: "destructive",
-        description: res.message,
-      });
+    if (!res.success) return toast.error(res.message);
 
     const { data, message } = res;
     const newSession = {
@@ -48,9 +43,7 @@ export const ProfileForm = () => {
       },
     };
     await update(newSession);
-    toast({
-      description: message,
-    });
+    toast(message);
     router.push("/account/manage");
   }
   return (

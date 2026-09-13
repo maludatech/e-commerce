@@ -179,6 +179,11 @@
     "Try again": "Try again",
     "Back To Home": "Back To Home"
   },
+  "NotFound": {
+    "Title": "Page Not Found",
+    "Description": "Sorry, we couldn't find the page you're looking for.",
+    "Back To Home": "Back To Home"
+  },
   "Admin": {
     "Deleted User": "Deleted User",
     "Overview": "Overview",

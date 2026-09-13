@@ -1,6 +1,8 @@
 import ReactMarkdown from "react-markdown";
 import { notFound } from "next/navigation";
 import { getWebPageBySlug } from "@/lib/actions/web-page.actions";
+import { getSetting } from "@/lib/actions/setting.actions";
+import { interpolateSiteTokens } from "@/lib/utils";
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
@@ -28,11 +30,14 @@ export default async function ProductDetailsPage(props: {
 
   if (!webPage) notFound();
 
+  const { site } = await getSetting();
+  const content = interpolateSiteTokens(webPage.content, site);
+
   return (
     <div className="p-4 max-w-3xl mx-auto">
       <h1 className="h1-bold py-4">{webPage.title}</h1>
       <section className="text-justify text-lg mb-20 web-page-content">
-        <ReactMarkdown>{webPage.content}</ReactMarkdown>
+        <ReactMarkdown>{content}</ReactMarkdown>
       </section>
     </div>
   );

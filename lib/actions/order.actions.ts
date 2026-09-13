@@ -73,7 +73,7 @@ export async function updateOrderToPaid(orderId: string) {
     order.paidAt = new Date();
     await order.save();
     if (!process.env.MONGODB_URI?.startsWith("mongodb://localhost"))
-      await updateProductStock(order._id.toString());
+      await fulfillOrderPayment(order._id.toString());
     if (order.user.email) await sendPurchaseReceipt({ order });
     revalidatePath(`/account/orders/${orderId}`);
     return { success: true, message: "Order paid successfully" };
@@ -81,18 +81,18 @@ export async function updateOrderToPaid(orderId: string) {
     return { success: false, message: formatError(err) };
   }
 }
-const updateProductStock = async (orderId: string) => {
+
+// Decrements stock and increments sales counts for every item in a paid
+// order. Called from both the Cash on Delivery "mark as paid" admin action
+// and the Stripe webhook, so a real card payment can't skip this.
+export const fulfillOrderPayment = async (orderId: string) => {
   const session = await mongoose.connection.startSession();
 
   try {
     session.startTransaction();
     const opts = { session };
 
-    const order = await Order.findOneAndUpdate(
-      { _id: orderId },
-      { isPaid: true, paidAt: new Date() },
-      opts,
-    );
+    const order = await Order.findById(orderId).session(session);
     if (!order) throw new Error("Order not found");
 
     for (const item of order.items) {
@@ -100,9 +100,10 @@ const updateProductStock = async (orderId: string) => {
       if (!product) throw new Error("Product not found");
 
       product.countInStock -= item.quantity;
+      product.numSales += item.quantity;
       await Product.updateOne(
         { _id: product._id },
-        { countInStock: product.countInStock },
+        { countInStock: product.countInStock, numSales: product.numSales },
         opts,
       );
     }

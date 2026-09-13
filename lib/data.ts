@@ -1067,11 +1067,11 @@ const data: Data = {
     {
       title: "About Us",
       slug: "about-us",
-      content: `Welcome to [Your Store Name], your trusted destination for quality products and exceptional service. Our journey began with a mission to bring you the best shopping experience by offering a wide range of products at competitive prices, all in one convenient platform.
+      content: `Welcome to {{siteName}}, your trusted destination for quality products and exceptional service. Our journey began with a mission to bring you the best shopping experience by offering a wide range of products at competitive prices, all in one convenient platform.
 
-At [Your Store Name], we prioritize customer satisfaction and innovation. Our team works tirelessly to curate a diverse selection of items, from everyday essentials to exclusive deals, ensuring there's something for everyone. We also strive to make your shopping experience seamless with fast shipping, secure payments, and excellent customer support.
+At {{siteName}}, we prioritize customer satisfaction and innovation. Our team works tirelessly to curate a diverse selection of items, from everyday essentials to exclusive deals, ensuring there's something for everyone. We also strive to make your shopping experience seamless with fast shipping, secure payments, and excellent customer support.
 
-As we continue to grow, our commitment to quality and service remains unwavering. Thank you for choosing [Your Store Name]—we look forward to being a part of your journey and delivering value every step of the way.`,
+As we continue to grow, our commitment to quality and service remains unwavering. Thank you for choosing {{siteName}}—we look forward to being a part of your journey and delivering value every step of the way.`,
       isPublished: true,
     },
     {
@@ -1081,14 +1081,14 @@ As we continue to grow, our commitment to quality and service remains unwavering
 
 **Customer Support**
 For inquiries about orders, products, or account-related issues, contact our customer support team:
-- **Email:** support@example.com
-- **Phone:** +1 (123) 456-7890
+- **Email:** {{siteEmail}}
+- **Phone:** {{sitePhone}}
 - **Live Chat:** Available on our website from 9 AM to 6 PM (Monday to Friday).
 
 **Head Office**
 For corporate or business-related inquiries, reach out to our headquarters:
-- **Address:** 1234 E-Commerce St, Suite 567, Business City, BC 12345
-- **Phone:** +1 (987) 654-3210
+- **Address:** {{siteAddress}}
+- **Phone:** {{sitePhone}}
 
 We look forward to assisting you! Your satisfaction is our priority.
 `,
@@ -1122,7 +1122,7 @@ Your data is safeguarded through robust security measures to prevent unauthorize
     {
       title: "Conditions of Use",
       slug: "conditions-of-use",
-      content: `Welcome to [Ecommerce Website Name]. By accessing or using our website, you agree to comply with and be bound by the following terms and conditions. These terms govern your use of our platform, including browsing, purchasing products, and interacting with any content or services provided. You must be at least 18 years old or have the consent of a parent or guardian to use this website. Any breach of these terms may result in the termination of your access to our platform.
+      content: `Welcome to {{siteName}}. By accessing or using our website, you agree to comply with and be bound by the following terms and conditions. These terms govern your use of our platform, including browsing, purchasing products, and interacting with any content or services provided. You must be at least 18 years old or have the consent of a parent or guardian to use this website. Any breach of these terms may result in the termination of your access to our platform.
 
 We strive to ensure all product descriptions, pricing, and availability information on our website are accurate. However, errors may occur, and we reserve the right to correct them without prior notice. All purchases are subject to our return and refund policy. By using our site, you acknowledge that your personal information will be processed according to our privacy policy, ensuring your data is handled securely and responsibly. Please review these terms carefully before proceeding with any transactions.
 `,
@@ -1131,11 +1131,11 @@ We strive to ensure all product descriptions, pricing, and availability informat
     {
       title: "Customer Service",
       slug: "customer-service",
-      content: `At [Your Store Name], our customer service team is here to ensure you have the best shopping experience. Whether you need assistance with orders, product details, or returns, we are committed to providing prompt and helpful support.
+      content: `At {{siteName}}, our customer service team is here to ensure you have the best shopping experience. Whether you need assistance with orders, product details, or returns, we are committed to providing prompt and helpful support.
 
 If you have questions or concerns, please reach out to us through our multiple contact options:
-- **Email:** support@example.com
-- **Phone:** +1 (123) 456-7890
+- **Email:** {{siteEmail}}
+- **Phone:** {{sitePhone}}
 - **Live Chat:** Available on our website for instant assistance
 
 We also provide helpful resources such as order tracking, product guides, and FAQs to assist you with common inquiries. Your satisfaction is our priority, and we’re here to resolve any issues quickly and efficiently. Thank you for choosing us!`,
@@ -1144,43 +1144,89 @@ We also provide helpful resources such as order tracking, product guides, and FA
     {
       title: "Returns Policy",
       slug: "returns-policy",
-      content: "Returns Policy Content",
+      content: `We want you to be completely satisfied with your purchase. If something isn't right, we're happy to help with a return or exchange.
+
+**Return Window**
+Most items can be returned within 14 days of delivery, provided they are unused, unworn, and in their original packaging with tags attached.
+
+**How to Start a Return**
+Sign in to your account, go to "My Orders", select the order in question, and follow the return instructions. Alternatively, contact us at {{siteEmail}} and we'll guide you through the process.
+
+**Refunds**
+Once your return is received and inspected, we'll notify you of the approval status. Approved refunds are issued to your original payment method within 5–10 business days.
+
+**Non-Returnable Items**
+For hygiene reasons, certain items (such as underwear or opened cosmetics, where applicable) cannot be returned unless defective. Sale items marked "Final Sale" are also non-returnable.
+
+Questions about a specific order? Reach out to us at {{siteEmail}} or {{sitePhone}}.`,
       isPublished: true,
     },
     {
       title: "Careers",
       slug: "careers",
-      content: "careers Content",
+      content: `We're not currently advertising any open positions, but we're always glad to hear from people who'd like to be part of {{siteName}}.
+
+If you're interested in future opportunities, feel free to send your résumé and a short note about what you're looking for to {{siteEmail}}. We'll keep it on file and reach out if a suitable role opens up.
+
+Thanks for your interest in growing with us!`,
       isPublished: true,
     },
     {
       title: "Blog",
       slug: "blog",
-      content: "Blog Content",
+      content: `Welcome to the {{siteName}} blog — this is where we'll be sharing style guides, product spotlights, and updates from the team.
+
+We're just getting started here, so check back soon for our first posts. In the meantime, follow our social channels or subscribe to our newsletter to be the first to know when new content goes live.`,
       isPublished: true,
     },
     {
       title: "Sell Products",
       slug: "sell",
-      content: `Sell Products Content`,
+      content: `Interested in selling your products through {{siteName}}? We're always open to hearing from brands and independent sellers who'd be a good fit for our store.
+
+**How It Works**
+Send us a message at {{siteEmail}} with a brief description of your products, pricing, and any relevant certifications or brand information. Our team will review your submission and follow up if it looks like a good match.
+
+We look forward to hearing from you!`,
       isPublished: true,
     },
     {
       title: "Become Affiliate",
       slug: "become-affiliate",
-      content: "Become Affiliate Content",
+      content: `Love what we do? Earn commission by referring customers to {{siteName}} through our affiliate program.
+
+**How It Works**
+Affiliates share a unique referral link with their audience. When someone makes a purchase through that link, you earn a commission on the sale.
+
+**Getting Started**
+We're onboarding affiliates on a rolling basis. To apply, email us at {{siteEmail}} with a bit about your audience (blog, social following, newsletter, etc.) and we'll get back to you with the details.`,
       isPublished: true,
     },
     {
       title: "Advertise Your Products",
       slug: "advertise",
-      content: "Advertise Your Products",
+      content: `Want your products featured in front of {{siteName}}'s customers? We offer a limited number of promotional placements across our homepage and category pages.
+
+**Interested?**
+Reach out to {{siteEmail}} with details about what you'd like to promote, and our team will get back to you with available options and pricing.`,
       isPublished: true,
     },
     {
       title: "Shipping Rates & Policies",
       slug: "shipping",
-      content: "Shipping Rates & Policies",
+      content: `We want your order to arrive quickly and safely. Here's what to expect at checkout.
+
+**Delivery Options**
+Available shipping speeds and rates are shown at checkout and vary based on your location and order size. Orders that meet the free-shipping minimum qualify for free standard delivery automatically.
+
+**Processing Time**
+Orders are typically processed within 1–2 business days before being handed off to our shipping carrier.
+
+**Order Tracking**
+Once your order ships, you'll receive a confirmation with tracking details so you can follow its progress.
+
+**Questions**
+For questions about a specific shipment, contact us at {{siteEmail}} or {{sitePhone}} with your order number handy.`,
       isPublished: true,
     },
   ],
@@ -1244,11 +1290,9 @@ We also provide helpful resources such as order tracking, product guides, and FA
   settings: [
     {
       common: {
-        freeShippingMinPrice: 35,
         isMaintenanceMode: false,
-        defaultTheme: "Light",
-        defaultColor: "Gold",
         pageSize: 9,
+        freeShippingMinPrice: 35,
       },
       site: {
         name: "Steeze-boutique",
@@ -1302,8 +1346,8 @@ We also provide helpful resources such as order tracking, product guides, and FA
       ],
       defaultCurrency: "USD",
       availablePaymentMethods: [
-        { name: "Stripe", commission: 0 },
-        { name: "Cash On Delivery", commission: 0 },
+        { name: "Stripe" },
+        { name: "Cash On Delivery" },
       ],
       defaultPaymentMethod: "Stripe",
       availableDeliveryDates: [

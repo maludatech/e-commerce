@@ -199,3 +199,28 @@ export const getFilterUrl = ({
   if (sort) newParams.sort = sort;
   return `/search?${new URLSearchParams(newParams).toString()}`;
 };
+
+// Lets CMS-style content (web pages, emails) reference live site settings
+// instead of baking in a name/email/phone that goes stale the moment an
+// admin changes it. Usage in content: "Welcome to {{siteName}}".
+export function interpolateSiteTokens(
+  content: string,
+  site: {
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+    url: string;
+  }
+): string {
+  const tokens: Record<string, string> = {
+    siteName: site.name,
+    siteEmail: site.email,
+    sitePhone: site.phone,
+    siteAddress: site.address,
+    siteUrl: site.url,
+  };
+  return content.replace(/\{\{(\w+)\}\}/g, (match, key) =>
+    key in tokens ? tokens[key] : match
+  );
+}

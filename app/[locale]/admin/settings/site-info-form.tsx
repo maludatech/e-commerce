@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { UploadButton } from "@/lib/uploadthing";
 import { SettingFormInput, SettingFormOutput } from "@/types";
 import { TrashIcon } from "lucide-react";
@@ -101,10 +101,7 @@ export default function SiteInfoForm({
                   form.setValue("site.logo", res[0].url);
                 }}
                 onUploadError={(error: Error) => {
-                  toast({
-                    variant: "destructive",
-                    description: `ERROR! ${error.message}`,
-                  });
+                  toast.error(`ERROR! ${error.message}`);
                 }}
               />
             )}

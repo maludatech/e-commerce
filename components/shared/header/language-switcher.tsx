@@ -8,15 +8,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 import { useLocale } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
-import useSettingStore from "@/hooks/use-setting-store";
 import { i18n } from "@/i18n-config";
-import { setCurrencyOnServer } from "@/lib/actions/setting.actions";
 import { ChevronDownIcon } from "lucide-react";
 
 export default function LanguageSwitcher() {
@@ -24,14 +21,6 @@ export default function LanguageSwitcher() {
   const locale = useLocale();
   const pathname = usePathname();
 
-  const {
-    setting: { availableCurrencies, currency },
-    setCurrency,
-  } = useSettingStore();
-  const handleCurrencyChange = async (newCurrency: string) => {
-    await setCurrencyOnServer(newCurrency);
-    setCurrency(newCurrency);
-  };
   const currentFlagCode = locales.find((l) => l.code === locale)?.icon;
   const CurrentFlag = currentFlagCode
     ? FlagIcons[currentFlagCode as keyof typeof FlagIcons]
@@ -63,20 +52,6 @@ export default function LanguageSwitcher() {
               </DropdownMenuRadioItem>
             );
           })}
-        </DropdownMenuRadioGroup>
-
-        <DropdownMenuSeparator />
-
-        <DropdownMenuLabel>Currency</DropdownMenuLabel>
-        <DropdownMenuRadioGroup
-          value={currency}
-          onValueChange={handleCurrencyChange}
-        >
-          {availableCurrencies.map((c) => (
-            <DropdownMenuRadioItem key={c.name} value={c.code}>
-              {c.symbol} {c.code}
-            </DropdownMenuRadioItem>
-          ))}
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>

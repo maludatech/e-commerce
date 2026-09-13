@@ -3,6 +3,7 @@ import { redirect, useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import Link from "next/link";
 import useSettingStore from "@/hooks/use-setting-store";
 import {
@@ -17,7 +18,7 @@ import { useForm } from "react-hook-form";
 import { IUserSignIn } from "@/types";
 import { signInWithCredentials } from "@/lib/actions/user.actions";
 
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserSignInSchema } from "@/lib/validator";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
@@ -45,7 +46,11 @@ export default function CredentialsSignInForm() {
     defaultValues: signInDefaultValues,
   });
 
-  const { control, handleSubmit } = form;
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = form;
 
   const onSubmit = async (data: IUserSignIn) => {
     try {
@@ -58,11 +63,7 @@ export default function CredentialsSignInForm() {
       if (isRedirectError(error)) {
         throw error;
       }
-      toast({
-        title: "Error",
-        description: "Invalid email or password",
-        variant: "destructive",
-      });
+      toast.error("Invalid email or password");
     }
   };
 
@@ -90,13 +91,14 @@ export default function CredentialsSignInForm() {
             name="password"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Password</FormLabel>
+                <div className="flex items-center justify-between">
+                  <FormLabel>Password</FormLabel>
+                  <Link href="/forgot-password" className="text-sm link">
+                    Forgot password?
+                  </Link>
+                </div>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Enter password"
-                    {...field}
-                  />
+                  <PasswordInput placeholder="Enter password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -104,7 +106,9 @@ export default function CredentialsSignInForm() {
           />
 
           <div>
-            <Button type="submit">Sign In</Button>
+            <Button type="submit" disabled={isSubmitting} className="w-full">
+              {isSubmitting ? "Signing in..." : "Sign In"}
+            </Button>
           </div>
           <div className="text-sm">
             By signing in, you agree to {site.name}&apos;s{" "}

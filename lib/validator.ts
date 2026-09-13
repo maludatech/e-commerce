@@ -203,6 +203,38 @@ export const UserNameSchema = z.object({
   name: UserName,
 });
 
+export const ForgotPasswordSchema = z.object({
+  email: Email,
+});
+
+export const ResetPasswordSchema = z
+  .object({
+    password: Password,
+    confirmPassword: Password,
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+
+export const ChangePasswordSchema = z
+  .object({
+    currentPassword: Password,
+    password: Password,
+    confirmPassword: Password,
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+
+// ADDRESS
+export const AddressInputSchema = ShippingAddressSchema;
+
+export const AddressUpdateSchema = AddressInputSchema.extend({
+  _id: z.string(),
+});
+
 // WEBPAGE
 export const WebPageInputSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters"),
@@ -228,21 +260,33 @@ export const CarouselSchema = z.object({
   buttonCaption: z.string().min(1, "buttonCaption is required"),
 });
 
+// Real ISO 4217 currency codes, from the JS engine itself - not a hand-typed
+// list that goes stale. Anything not in here can't be formatted by
+// Intl.NumberFormat, which is what actually renders prices on the site.
+const VALID_CURRENCY_CODES = new Set(Intl.supportedValuesOf("currency"));
+
 export const SiteCurrencySchema = z.object({
   name: z.string().min(1, "Name is required"),
-  code: z.string().min(1, "Code is required"),
+  code: z
+    .string()
+    .min(1, "Code is required")
+    .transform((val) => val.toUpperCase())
+    .refine((val) => VALID_CURRENCY_CODES.has(val), {
+      message: "Must be a valid ISO 4217 currency code (e.g. USD, EUR, GBP)",
+    }),
   convertRate: z.coerce.number().min(0, "Convert rate must be at least 0"),
   symbol: z.string().min(1, "Symbol is required"),
 });
 
 export const PaymentMethodSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  commission: z.coerce.number().min(0, "Commission must be at least 0"),
 });
 
 export const DeliveryDateSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  daysToDeliver: z.number().min(0, "Days to deliver must be at least 0"),
+  daysToDeliver: z.coerce
+    .number()
+    .min(0, "Days to deliver must be at least 0"),
   shippingPrice: z.coerce.number().min(0, "Shipping price must be at least 0"),
   freeShippingMinPrice: z.coerce
     .number()
@@ -262,14 +306,6 @@ export const SettingInputSchema = z.object({
       .number()
       .min(0, "Free shipping min price must be at least 0")
       .default(0),
-    defaultTheme: z
-      .string()
-      .min(1, "Default theme is required")
-      .default("light"),
-    defaultColor: z
-      .string()
-      .min(1, "Default color is required")
-      .default("gold"),
   }),
   site: z.object({
     name: z.string().min(1, "Name is required"),

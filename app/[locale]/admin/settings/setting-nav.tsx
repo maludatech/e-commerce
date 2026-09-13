@@ -5,7 +5,6 @@ import {
   Currency,
   ImageIcon,
   Info,
-  Languages,
   Package,
   SettingsIcon,
 } from "lucide-react";
@@ -55,7 +54,6 @@ const SettingNav = () => {
             hash: "setting-carousels",
             icon: <ImageIcon />,
           },
-          { name: "Languages", hash: "setting-languages", icon: <Languages /> },
           {
             name: "Currencies",
             hash: "setting-currencies",

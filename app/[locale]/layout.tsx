@@ -8,6 +8,7 @@ import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { getSetting } from "@/lib/actions/setting.actions";
 import { cookies } from "next/headers";
+import { auth } from "@/auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,7 +22,7 @@ const geistMono = Geist_Mono({
 
 export async function generateMetadata() {
   const {
-    site: { slogan, name, description, url },
+    site: { slogan, name, description, url, keywords, author },
   } = await getSetting();
   return {
     title: {
@@ -29,6 +30,8 @@ export async function generateMetadata() {
       default: `${name}. ${slogan}`,
     },
     description: description,
+    keywords: keywords,
+    authors: [{ name: author }],
     metadataBase: new URL(url),
     openGraph: {
       title: name,
@@ -65,6 +68,9 @@ export default async function AppLayout({
   const setting = await getSetting();
   const currencyCookie = (await cookies()).get("currency");
   const currency = currencyCookie ? currencyCookie.value : "USD";
+  const session = await auth();
+  const showMaintenanceBanner =
+    setting.common.isMaintenanceMode && session?.user?.role === "Admin";
 
   const resolvedParams = await params;
   const { locale } = resolvedParams;
@@ -84,6 +90,12 @@ export default async function AppLayout({
       <body
         className={`min-h-screen ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {showMaintenanceBanner && (
+          <div className="bg-yellow-400 text-black text-sm font-medium text-center py-1 px-4">
+            Maintenance mode is ON — visitors see a maintenance page. Turn it
+            off in Admin → Settings when you&apos;re done.
+          </div>
+        )}
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ClientProviders setting={{ ...setting, currency }}>
             {children}

@@ -42,7 +42,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import {
   createUpdateReview,
   getReviewByProductId,
@@ -82,10 +82,7 @@ export default function ReviewList({
       setTotalPages(res.totalPages);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
-      toast({
-        variant: "destructive",
-        description: t("Error in fetching reviews"),
-      });
+      toast.error(t("Error in fetching reviews"));
     }
   };
 
@@ -127,23 +124,16 @@ export default function ReviewList({
   });
 
   const [open, setOpen] = useState(false);
-  const { toast } = useToast();
 
   const onSubmit = async (values: CustomerReviewOutput) => {
     const res = await createUpdateReview({
       data: { ...values, product: product._id.toString() },
       path: `/product/${product.slug}`,
     });
-    if (!res.success)
-      return toast({
-        variant: "destructive",
-        description: res.message,
-      });
+    if (!res.success) return toast.error(res.message);
     setOpen(false);
     reload();
-    toast({
-      description: res.message,
-    });
+    toast(res.message);
   };
 
   const handleOpenForm = async () => {

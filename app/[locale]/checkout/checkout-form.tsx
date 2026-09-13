@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { createOrder } from "@/lib/actions/order.actions";
 import {
   calculateFutureDate,
@@ -30,7 +30,7 @@ import { ShippingAddressSchema } from "@/lib/validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import CheckoutFooter from "./checkout-footer";
 import { ShippingAddress } from "@/types";
@@ -62,7 +62,6 @@ const shippingAddressDefaultValues =
       };
 
 const CheckoutForm = () => {
-  const { toast } = useToast();
   const router = useRouter();
   const {
     setting: {
@@ -119,33 +118,30 @@ const CheckoutForm = () => {
   const [isDeliveryDateSelected, setIsDeliveryDateSelected] =
     useState<boolean>(false);
 
-  const handlePlaceOrder = async () => {
-    const res = await createOrder({
-      items,
-      shippingAddress,
-      expectedDeliveryDate: calculateFutureDate(
-        availableDeliveryDates[deliveryDateIndex!].daysToDeliver
-      ),
-      deliveryDateIndex,
-      paymentMethod,
-      itemsPrice,
-      shippingPrice,
-      taxPrice,
-      totalPrice,
+  const [isPlacingOrder, startPlacingOrder] = useTransition();
+  const handlePlaceOrder = () => {
+    startPlacingOrder(async () => {
+      const res = await createOrder({
+        items,
+        shippingAddress,
+        expectedDeliveryDate: calculateFutureDate(
+          availableDeliveryDates[deliveryDateIndex!].daysToDeliver
+        ),
+        deliveryDateIndex,
+        paymentMethod,
+        itemsPrice,
+        shippingPrice,
+        taxPrice,
+        totalPrice,
+      });
+      if (!res.success) {
+        toast.error(res.message);
+      } else {
+        toast(res.message);
+        clearCart();
+        router.push(`/checkout/${res.data?.orderId}`);
+      }
     });
-    if (!res.success) {
-      toast({
-        description: res.message,
-        variant: "destructive",
-      });
-    } else {
-      toast({
-        description: res.message,
-        variant: "default",
-      });
-      clearCart();
-      router.push(`/checkout/${res.data?.orderId}`);
-    }
   };
   const handleSelectPaymentMethod = () => {
     setIsAddressSelected(true);
@@ -189,8 +185,12 @@ const CheckoutForm = () => {
         )}
         {isPaymentMethodSelected && isAddressSelected && (
           <div>
-            <Button onClick={handlePlaceOrder} className="rounded-full w-full">
-              Place Your Order
+            <Button
+              onClick={handlePlaceOrder}
+              disabled={isPlacingOrder}
+              className="rounded-full w-full"
+            >
+              {isPlacingOrder ? "Placing Order..." : "Place Your Order"}
             </Button>
             <p className="text-xs text-center py-2">
               By placing your order, you agree to {site.name}&apos;s{" "}
@@ -684,8 +684,12 @@ const CheckoutForm = () => {
 
               <Card className="hidden md:block ">
                 <CardContent className="p-4 flex flex-col md:flex-row justify-between items-center gap-3">
-                  <Button onClick={handlePlaceOrder} className="rounded-full">
-                    Place Your Order
+                  <Button
+                    onClick={handlePlaceOrder}
+                    disabled={isPlacingOrder}
+                    className="rounded-full"
+                  >
+                    {isPlacingOrder ? "Placing Order..." : "Place Your Order"}
                   </Button>
                   <div className="flex-1">
                     <p className="font-bold text-lg">

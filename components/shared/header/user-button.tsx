@@ -18,19 +18,19 @@ import Link from "next/link";
 export default async function UserButton() {
   const t = await getTranslations();
   const session = await auth();
+  const firstName = session?.user.name?.split(" ")[0];
   return (
     <div className="flex gap-2 items-center">
       <DropdownMenu>
-        <DropdownMenuTrigger className="header-button" asChild>
+        <DropdownMenuTrigger className="header-button max-w-32" asChild>
           <div className="flex items-center">
-            <div className="flex flex-col text-xs text-left">
-              <span>
-                {t("Header.Hello")},{" "}
-                {session ? session.user.name : t("Header.sign in")}
+            <div className="flex flex-col text-xs text-left min-w-0">
+              <span className="truncate">
+                {t("Header.Hello")}, {session ? firstName : t("Header.sign in")}
               </span>
               <span className="font-bold">{t("Header.Account & Orders")}</span>
             </div>
-            <ChevronDownIcon />
+            <ChevronDownIcon className="shrink-0" />
           </div>
         </DropdownMenuTrigger>
         {session ? (

@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useCartStore from "@/hooks/use-cart-store";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { OrderItem } from "@/types";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -24,7 +24,6 @@ export default function AddToCart({
   minimal?: boolean;
 }) {
   const router = useRouter();
-  const { toast } = useToast();
 
   const { addItem } = useCartStore();
 
@@ -39,23 +38,14 @@ export default function AddToCart({
       onClick={() => {
         try {
           addItem(item, 1);
-          toast({
-            description: t("Product.Added to Cart"),
-            action: (
-              <Button
-                onClick={() => {
-                  router.push("/cart");
-                }}
-              >
-                {t("Product.Go to Cart")}
-              </Button>
-            ),
+          toast(t("Product.Added to Cart"), {
+            action: {
+              label: t("Product.Go to Cart"),
+              onClick: () => router.push("/cart"),
+            },
           });
         } catch (error: any) {
-          toast({
-            variant: "destructive",
-            description: error.message,
-          });
+          toast.error(error.message);
         }
       }}
     >
@@ -89,10 +79,7 @@ export default function AddToCart({
             const itemId = await addItem(item, quantity);
             router.push(`/cart/${itemId}`);
           } catch (error: any) {
-            toast({
-              variant: "destructive",
-              description: error.message,
-            });
+            toast.error(error.message);
           }
         }}
       >
@@ -105,10 +92,7 @@ export default function AddToCart({
             addItem(item, quantity);
             router.push(`/checkout`);
           } catch (error: any) {
-            toast({
-              variant: "destructive",
-              description: error.message,
-            });
+            toast.error(error.message);
           }
         }}
         className="w-full rounded-full "

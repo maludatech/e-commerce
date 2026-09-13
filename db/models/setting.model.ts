@@ -14,8 +14,6 @@ const settingSchema = new Schema<ISetting>(
       pageSize: { type: Number, required: true, default: 9 },
       isMaintenanceMode: { type: Boolean, required: true, default: false },
       freeShippingMinPrice: { type: Number, required: true, default: 0 },
-      defaultTheme: { type: String, required: true, default: "light" },
-      defaultColor: { type: String, required: true, default: "gold" },
     },
     site: {
       name: { type: String, required: true },
@@ -82,7 +80,6 @@ const settingSchema = new Schema<ISetting>(
     availablePaymentMethods: [
       {
         name: { type: String, required: true },
-        commission: { type: Number, required: true, default: 0 },
       },
     ],
     defaultPaymentMethod: { type: String, required: true },

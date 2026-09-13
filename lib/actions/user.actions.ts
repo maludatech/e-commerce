@@ -1,9 +1,23 @@
 "use server";
 
+import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { auth, signIn, signOut } from "@/auth";
-import { IUserName, IUserSignIn, IUserSignUp } from "@/types";
-import { UserSignUpSchema, UserUpdateSchema } from "../validator";
+import {
+  IChangePassword,
+  IForgotPassword,
+  IResetPassword,
+  IUserName,
+  IUserSignIn,
+  IUserSignUp,
+} from "@/types";
+import {
+  ChangePasswordSchema,
+  ForgotPasswordSchema,
+  ResetPasswordSchema,
+  UserSignUpSchema,
+  UserUpdateSchema,
+} from "../validator";
 import { connectToDb } from "@/utils/database";
 import User from "@/db/models/user.model";
 import { formatError } from "../utils";
@@ -11,6 +25,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { getSetting } from "./setting.actions";
+import { sendResetPasswordEmail } from "@/emails";
 
 export interface IUserDTO {
   _id: string;
@@ -142,4 +157,115 @@ export async function getUserById(userId: string): Promise<IUserDTO> {
     ...user.toObject(),
     _id: user._id.toString(),
   };
+}
+
+// FORGOT / RESET PASSWORD
+const RESET_TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
+
+export async function requestPasswordReset(data: IForgotPassword) {
+  // Always return the same success message whether or not the email is
+  // registered, so this endpoint can't be used to enumerate accounts.
+  const genericResponse = {
+    success: true,
+    message: "If that email is registered, a reset link has been sent.",
+  };
+  try {
+    const { email } = await ForgotPasswordSchema.parseAsync(data);
+    await connectToDb();
+    const user = await User.findOne({ email });
+    if (!user || !user.password) return genericResponse;
+
+    const rawToken = crypto.randomBytes(32).toString("hex");
+    user.resetPasswordToken = crypto
+      .createHash("sha256")
+      .update(rawToken)
+      .digest("hex");
+    user.resetPasswordExpires = new Date(Date.now() + RESET_TOKEN_TTL_MS);
+    await user.save();
+
+    const { site } = await getSetting();
+    await sendResetPasswordEmail({
+      email: user.email,
+      name: user.name,
+      resetUrl: `${site.url}/reset-password/${rawToken}`,
+    });
+
+    return genericResponse;
+  } catch {
+    return genericResponse;
+  }
+}
+
+export async function resetPassword(token: string, data: IResetPassword) {
+  try {
+    const { password } = await ResetPasswordSchema.parseAsync(data);
+    await connectToDb();
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: new Date() },
+    });
+    if (!user) {
+      return {
+        success: false,
+        message: "This reset link is invalid or has expired.",
+      };
+    }
+
+    if (user.password && (await bcrypt.compare(password, user.password))) {
+      return {
+        success: false,
+        message: "New password must be different from your current password.",
+      };
+    }
+
+    user.password = await bcrypt.hash(password, 5);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    return {
+      success: true,
+      message: "Password reset successfully. You can now sign in.",
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+}
+
+// Change password for the currently signed-in user (requires their current
+// password, unlike resetPassword which is for when they're locked out).
+export async function changePassword(data: IChangePassword) {
+  try {
+    const { currentPassword, password } =
+      await ChangePasswordSchema.parseAsync(data);
+    const session = await auth();
+    if (!session?.user?.id) throw new Error("Not authenticated");
+
+    await connectToDb();
+    const user = await User.findById(session.user.id);
+    if (!user || !user.password) throw new Error("User not found");
+
+    const isCurrentPasswordCorrect = await bcrypt.compare(
+      currentPassword,
+      user.password,
+    );
+    if (!isCurrentPasswordCorrect) {
+      return { success: false, message: "Current password is incorrect." };
+    }
+
+    if (await bcrypt.compare(password, user.password)) {
+      return {
+        success: false,
+        message: "New password must be different from your current password.",
+      };
+    }
+
+    user.password = await bcrypt.hash(password, 5);
+    await user.save();
+
+    return { success: true, message: "Password changed successfully." };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
 }

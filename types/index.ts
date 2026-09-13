@@ -1,11 +1,16 @@
 import {
+  AddressInputSchema,
+  AddressUpdateSchema,
   CarouselSchema,
   CartSchema,
+  ChangePasswordSchema,
   DeliveryDateSchema,
+  ForgotPasswordSchema,
   OrderInputSchema,
   OrderItemSchema,
   PaymentMethodSchema,
   ProductInputSchema,
+  ResetPasswordSchema,
   ReviewInputSchema,
   SettingInputSchema,
   ShippingAddressSchema,
@@ -74,6 +79,14 @@ export type IUserInput = z.infer<typeof UserInputSchema>;
 export type IUserSignIn = z.infer<typeof UserSignInSchema>;
 export type IUserSignUp = z.infer<typeof UserSignUpSchema>;
 export type IUserName = z.infer<typeof UserNameSchema>;
+export type IForgotPassword = z.infer<typeof ForgotPasswordSchema>;
+export type IResetPassword = z.infer<typeof ResetPasswordSchema>;
+export type IChangePassword = z.infer<typeof ChangePasswordSchema>;
+
+// address
+export type IAddressInput = z.infer<typeof AddressInputSchema>;
+export type IAddressUpdate = z.infer<typeof AddressUpdateSchema>;
+export type IAddress = ShippingAddress & { _id: string; isDefault: boolean };
 
 // webpage
 export type IWebPageInput = z.infer<typeof WebPageInputSchema>;
